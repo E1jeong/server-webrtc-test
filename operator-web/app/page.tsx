@@ -64,6 +64,8 @@ export default function Home() {
   const [peers, setPeers] = useState<Peer[]>([]);
   const [logs, setLogs] = useState<EventLog[]>([]);
   const [callStatus, setCallStatus] = useState("통화 대기");
+  const [mediaReady, setMediaReady] = useState(false);
+  const [microphoneMuted, setMicrophoneMuted] = useState(false);
   const [activeCall, setActiveCall] = useState<{
     peerId: string;
     callId: string;
@@ -247,12 +249,17 @@ export default function Home() {
     }
 
     try {
-      setCallStatus("카메라 준비 중");
+      setCallStatus("카메라·마이크 준비 중");
       const localStream = await navigator.mediaDevices.getUserMedia({
         video: { width: 640, height: 480 },
-        audio: false,
+        audio: {
+          echoCancellation: true,
+          noiseSuppression: true,
+          autoGainControl: true,
+        },
       });
       localStreamRef.current = localStream;
+      setMediaReady(true);
       if (localVideoRef.current) {
         localVideoRef.current.srcObject = localStream;
       }
@@ -274,17 +281,18 @@ export default function Home() {
         if (!remoteVideoRef.current) return;
         remoteVideoRef.current.srcObject =
           event.streams[0] ?? new MediaStream([event.track]);
-        setCallStatus("단말 영상 수신 중");
+        setCallStatus("단말 미디어 수신 중");
       };
       peerConnection.onconnectionstatechange = () => {
         setCallStatus(`WebRTC ${peerConnection.connectionState}`);
       };
       localStream
-        .getVideoTracks()
+        .getTracks()
         .forEach((track) => peerConnection.addTrack(track, localStream));
 
       const offer = await peerConnection.createOffer({
         offerToReceiveVideo: true,
+        offerToReceiveAudio: true,
       });
       await peerConnection.setLocalDescription(offer);
       sendMessage({
@@ -293,11 +301,11 @@ export default function Home() {
         callId,
         sdp: offer.sdp,
       });
-      setCallStatus("영상 연결 중");
+      setCallStatus("음성·영상 연결 중");
     } catch (error) {
       appendLog(
         "INFO",
-        `영상 시작 실패: ${error instanceof Error ? error.message : String(error)}`,
+        `통화 시작 실패: ${error instanceof Error ? error.message : String(error)}`,
       );
       hangUp();
     }
@@ -355,6 +363,18 @@ export default function Home() {
     closeVideoCall();
   }
 
+  function toggleMicrophoneMuted() {
+    setMicrophoneMuted((current) => {
+      const next = !current;
+      localStreamRef.current
+        ?.getAudioTracks()
+        .forEach((track) => {
+          track.enabled = !next;
+        });
+      return next;
+    });
+  }
+
   function closeVideoCall() {
     peerConnectionRef.current?.close();
     peerConnectionRef.current = null;
@@ -362,6 +382,8 @@ export default function Home() {
     localStreamRef.current = null;
     pendingIceRef.current = [];
     setCurrentCall(null);
+    setMediaReady(false);
+    setMicrophoneMuted(false);
     if (localVideoRef.current) localVideoRef.current.srcObject = null;
     if (remoteVideoRef.current) remoteVideoRef.current.srcObject = null;
     setCallStatus("통화 대기");
@@ -443,11 +465,18 @@ export default function Home() {
         <section className="video-panel" aria-labelledby="video-title">
           <div className="section-heading compact">
             <div>
-              <p className="section-kicker">02 · Video</p>
-              <h2 id="video-title">영상 통화</h2>
+              <p className="section-kicker">02 · Audio / Video</p>
+              <h2 id="video-title">음성·영상 통화</h2>
             </div>
             <div className="call-actions">
               <span className="call-status">{callStatus}</span>
+              <button
+                className="button button-secondary"
+                onClick={toggleMicrophoneMuted}
+                disabled={!mediaReady}
+              >
+                {microphoneMuted ? "마이크 켜기" : "마이크 끄기"}
+              </button>
               <button
                 className="button button-danger"
                 onClick={hangUp}
@@ -560,7 +589,7 @@ export default function Home() {
       </div>
 
       <footer>
-        LAN video PoC · Audio, STUN and TURN are disabled.
+        LAN audio/video PoC · STUN and TURN are disabled.
       </footer>
     </main>
   );

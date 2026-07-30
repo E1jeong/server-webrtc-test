@@ -32,6 +32,7 @@ test("renders the operator signaling console", async () => {
   assert.match(html, /Operator Console/);
   assert.match(html, /서버 연결/);
   assert.match(html, /온라인 단말/);
+  assert.match(html, /마이크 끄기/);
   assert.match(html, /Signaling 로그/);
   assert.doesNotMatch(html, /codex-preview|react-loading-skeleton/i);
 });

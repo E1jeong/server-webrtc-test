@@ -43,6 +43,9 @@ Windows 개발 PC에서는 기본 3000번 포트가 제외 범위와 충돌할 �
 - 같은 신뢰 LAN의 고정 test Peer
 - operator 발신, Android 자동 수락
 - SDP Offer/Answer와 trickle ICE
-- 양방향 영상
+- 양방향 영상·음성
+- browser와 Android 마이크 음소거
+- browser 미디어 제약 및 Android WebRTC 오디오 처리 기반 에코 제거·노이즈 억제
+- Android 음성통화 오디오 포커스, 스피커 라우팅과 종료 시 복구
 
-오디오, STUN/TURN, 인증, HTTPS/WSS와 운영 배포는 아직 구현하지 않았습니다.
+STUN/TURN, 인증, HTTPS/WSS와 운영 배포는 아직 구현하지 않았습니다. 실제 장비의 에코·하울링·볼륨·오디오 포커스 전환은 별도 검증이 필요합니다.
