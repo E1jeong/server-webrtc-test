@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -56,8 +57,8 @@ fun OperatorConsoleScreen(
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(16.dp),
-                verticalArrangement = Arrangement.spacedBy(14.dp)
+                    .padding(12.dp),
+                verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
                 ConnectionPanel(
                     serverUrl = state.serverUrl,
@@ -69,27 +70,30 @@ fun OperatorConsoleScreen(
                     onDisconnect = { manager.disconnect() }
                 )
 
+                // Main Workspace: Left Video Stage + Right (Devices + Event Log)
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
                         .weight(1f),
-                    horizontalArrangement = Arrangement.spacedBy(14.dp)
+                    horizontalArrangement = Arrangement.spacedBy(10.dp)
                 ) {
-                    // Left Column: Video Stage (02 · Audio / Video)
+                    // Left Column: 02 · Audio / Video (Large Tall 9:16 Video Stage)
                     VideoStagePanel(
                         videoFrame = videoFrame,
                         callState = state.callState,
                         callStatusMessage = state.callStatusMessage,
                         onHangup = { manager.hangup() },
                         onToggleMicrophoneMute = { manager.toggleMicrophoneMute() },
-                        modifier = Modifier.weight(1.35f)
+                        modifier = Modifier
+                            .weight(1.35f)
+                            .fillMaxHeight()
                     )
 
-                    // Right Column: Devices (03) & Logs (04)
+                    // Right Column: 03 · Devices (Top) + 04 · Event Log (Bottom)
                     Column(
                         modifier = Modifier
                             .weight(1f)
-                            .fillMaxSize(),
+                            .fillMaxHeight(),
                         verticalArrangement = Arrangement.spacedBy(14.dp)
                     ) {
                         DeviceListPanel(
@@ -97,13 +101,17 @@ fun OperatorConsoleScreen(
                             connectionStatus = state.connectionStatus,
                             callState = state.callState,
                             onInviteDevice = { manager.invite(it) },
-                            modifier = Modifier.weight(1f)
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .weight(1f)
                         )
 
                         EventLogPanel(
                             logs = state.logs,
                             onClearLogs = { manager.clearLogs() },
-                            modifier = Modifier.weight(1.1f)
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .weight(1.15f)
                         )
                     }
                 }

@@ -12,7 +12,7 @@ import com.sumas.operator.ui.OperatorConsoleScreen
 
 fun main() = application {
     val windowState = rememberWindowState(
-        size = DpSize(1200.dp, 800.dp)
+        size = DpSize(840.dp, 960.dp)
     )
     val manager = remember { DesktopOperatorManager() }
 

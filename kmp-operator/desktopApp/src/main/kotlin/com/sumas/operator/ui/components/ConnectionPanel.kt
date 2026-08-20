@@ -46,39 +46,42 @@ fun ConnectionPanel(
 
     Card(
         modifier = modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(12.dp),
+        shape = RoundedCornerShape(10.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surface
         ),
         elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
     ) {
-        Column(modifier = Modifier.padding(16.dp)) {
+        Column(modifier = Modifier.padding(12.dp)) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Column {
+                Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
                         text = "01 · Signaling",
                         style = MaterialTheme.typography.labelSmall,
                         color = MaterialTheme.colorScheme.primary,
                         fontWeight = FontWeight.Bold
                     )
+                    Spacer(modifier = Modifier.width(8.dp))
                     Text(
                         text = "서버 연결",
-                        style = MaterialTheme.typography.titleMedium,
+                        style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.Bold
                     )
                 }
+
                 Text(
-                    text = "Signaling 서버에 Operator Peer로 등록합니다.",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    text = "Signaling 서버 Operator 등록",
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    fontSize = 11.sp
                 )
             }
 
-            Spacer(modifier = Modifier.height(14.dp))
+            Spacer(modifier = Modifier.height(8.dp))
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -87,53 +90,57 @@ fun ConnectionPanel(
                 OutlinedTextField(
                     value = serverUrl,
                     onValueChange = onUrlChange,
-                    label = { Text("WebSocket URL") },
-                    placeholder = { Text("ws://localhost:8080/ws") },
+                    label = { Text("WebSocket URL", fontSize = 11.sp) },
+                    placeholder = { Text("ws://localhost:8080/ws", fontSize = 11.sp) },
                     singleLine = true,
+                    textStyle = MaterialTheme.typography.bodySmall,
                     enabled = !isConnectedOrConnecting,
                     keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
                     keyboardActions = KeyboardActions(onDone = { if (!isConnectedOrConnecting) onConnect() }),
-                    modifier = Modifier.weight(3f)
+                    modifier = Modifier.weight(3.2f)
                 )
 
-                Spacer(modifier = Modifier.width(12.dp))
+                Spacer(modifier = Modifier.width(8.dp))
 
                 OutlinedTextField(
                     value = operatorId,
                     onValueChange = onOperatorIdChange,
-                    label = { Text("Operator ID") },
-                    placeholder = { Text("operator-test-01") },
+                    label = { Text("Operator ID", fontSize = 11.sp) },
+                    placeholder = { Text("operator-test-01", fontSize = 11.sp) },
                     singleLine = true,
+                    textStyle = MaterialTheme.typography.bodySmall,
                     enabled = !isConnectedOrConnecting,
                     keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
                     keyboardActions = KeyboardActions(onDone = { if (!isConnectedOrConnecting) onConnect() }),
                     modifier = Modifier.weight(2f)
                 )
 
-                Spacer(modifier = Modifier.width(12.dp))
+                Spacer(modifier = Modifier.width(8.dp))
 
                 if (isConnectedOrConnecting) {
                     OutlinedButton(
                         onClick = onDisconnect,
-                        shape = RoundedCornerShape(8.dp),
+                        shape = RoundedCornerShape(6.dp),
                         colors = ButtonDefaults.outlinedButtonColors(
                             contentColor = Color(0xFFD32F2F)
                         ),
-                        modifier = Modifier.height(56.dp)
+                        contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 14.dp, vertical = 0.dp),
+                        modifier = Modifier.height(48.dp)
                     ) {
-                        Text("연결 해제", fontWeight = FontWeight.Bold)
+                        Text("연결 해제", fontWeight = FontWeight.Bold, fontSize = 12.sp)
                     }
                 } else {
                     Button(
                         onClick = onConnect,
-                        shape = RoundedCornerShape(8.dp),
+                        shape = RoundedCornerShape(6.dp),
                         enabled = serverUrl.isNotBlank() && operatorId.isNotBlank(),
-                        modifier = Modifier.height(56.dp)
+                        contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 14.dp, vertical = 0.dp),
+                        modifier = Modifier.height(48.dp)
                     ) {
                         Text(
                             text = if (connectionStatus == ConnectionStatus.CONNECTING) "연결 중..." else "서버 연결",
                             fontWeight = FontWeight.Bold,
-                            fontSize = 14.sp
+                            fontSize = 12.sp
                         )
                     }
                 }

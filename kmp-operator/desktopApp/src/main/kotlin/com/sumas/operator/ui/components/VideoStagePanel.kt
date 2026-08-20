@@ -11,6 +11,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -58,8 +60,8 @@ fun VideoStagePanel(
     modifier: Modifier = Modifier
 ) {
     Card(
-        modifier = modifier.fillMaxSize(),
-        shape = RoundedCornerShape(12.dp),
+        modifier = modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(10.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surface
         ),
@@ -68,7 +70,7 @@ fun VideoStagePanel(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(16.dp)
+                .padding(12.dp)
         ) {
             // Header
             Row(
@@ -76,16 +78,17 @@ fun VideoStagePanel(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Column {
+                Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
-                        text = "02 · Audio / Video",
+                        text = "02 · Video",
                         style = MaterialTheme.typography.labelSmall,
                         color = MaterialTheme.colorScheme.primary,
                         fontWeight = FontWeight.Bold
                     )
+                    Spacer(modifier = Modifier.width(8.dp))
                     Text(
                         text = "음성·영상 통화",
-                        style = MaterialTheme.typography.titleMedium,
+                        style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.Bold
                     )
                 }
@@ -93,88 +96,118 @@ fun VideoStagePanel(
                 // Call Actions
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    horizontalArrangement = Arrangement.spacedBy(6.dp)
                 ) {
-                    // Status Badge
-                    Surface(
-                        shape = RoundedCornerShape(6.dp),
-                        color = when (callState) {
-                            is CallState.InCall -> Color(0xFF388E3C).copy(alpha = 0.15f)
-                            is CallState.Calling -> Color(0xFFFFA000).copy(alpha = 0.15f)
-                            CallState.Idle -> MaterialTheme.colorScheme.surfaceVariant
-                        }
-                    ) {
-                        Text(
-                            text = when (callState) {
-                                is CallState.InCall -> "● ${callState.statusText}"
-                                is CallState.Calling -> "● 연결 시도 중"
-                                CallState.Idle -> callStatusMessage
-                            },
-                            modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp),
-                            style = MaterialTheme.typography.labelMedium,
-                            fontWeight = FontWeight.Bold,
-                            color = when (callState) {
-                                is CallState.InCall -> Color(0xFF2E7D32)
-                                is CallState.Calling -> Color(0xFFE65100)
-                                CallState.Idle -> MaterialTheme.colorScheme.onSurfaceVariant
+                    when (callState) {
+                        is CallState.InCall -> {
+                            val isMuted = callState.isMicrophoneMuted
+                            val isMediaReady = callState.isMediaReady
+
+                            OutlinedButton(
+                                onClick = onToggleMicrophoneMute,
+                                enabled = isMediaReady,
+                                shape = RoundedCornerShape(4.dp),
+                                contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 10.dp, vertical = 0.dp),
+                                modifier = Modifier.height(28.dp)
+                            ) {
+                                Text(
+                                    text = if (isMuted) "마이크 켜기" else "마이크 끄기",
+                                    style = MaterialTheme.typography.labelSmall,
+                                    fontSize = 11.sp,
+                                    fontWeight = FontWeight.SemiBold
+                                )
                             }
-                        )
-                    }
 
-                    // Mic Mute Button
-                    val isMuted = (callState as? CallState.InCall)?.isMicrophoneMuted ?: false
-                    val isMediaReady = (callState as? CallState.InCall)?.isMediaReady ?: false
+                            Button(
+                                onClick = onHangup,
+                                shape = RoundedCornerShape(4.dp),
+                                contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 10.dp, vertical = 0.dp),
+                                modifier = Modifier.height(28.dp),
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = Color(0xFFD32F2F)
+                                )
+                            ) {
+                                Text(
+                                    text = "통화 종료",
+                                    style = MaterialTheme.typography.labelSmall,
+                                    fontSize = 11.sp,
+                                    fontWeight = FontWeight.Bold
+                                )
+                            }
+                        }
 
-                    OutlinedButton(
-                        onClick = onToggleMicrophoneMute,
-                        enabled = isMediaReady,
-                        shape = RoundedCornerShape(6.dp)
-                    ) {
-                        Text(
-                            text = if (isMuted) "마이크 켜기" else "마이크 끄기",
-                            style = MaterialTheme.typography.labelMedium,
-                            fontWeight = FontWeight.SemiBold
-                        )
-                    }
+                        is CallState.Calling -> {
+                            Surface(
+                                shape = RoundedCornerShape(4.dp),
+                                color = Color(0xFFFFA000).copy(alpha = 0.15f)
+                            ) {
+                                Text(
+                                    text = "● 연결 시도 중",
+                                    modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+                                    style = MaterialTheme.typography.labelSmall,
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 11.sp,
+                                    color = Color(0xFFE65100)
+                                )
+                            }
 
-                    // Hangup Button
-                    val isCallActive = callState !is CallState.Idle
-                    Button(
-                        onClick = onHangup,
-                        enabled = isCallActive,
-                        shape = RoundedCornerShape(6.dp),
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = Color(0xFFD32F2F),
-                            disabledContainerColor = MaterialTheme.colorScheme.surfaceVariant
-                        )
-                    ) {
-                        Text(
-                            text = "통화 종료",
-                            style = MaterialTheme.typography.labelMedium,
-                            fontWeight = FontWeight.Bold
-                        )
+                            Button(
+                                onClick = onHangup,
+                                shape = RoundedCornerShape(4.dp),
+                                contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 8.dp, vertical = 0.dp),
+                                modifier = Modifier.height(28.dp),
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = Color(0xFFD32F2F)
+                                )
+                            ) {
+                                Text(
+                                    text = "통화 취소",
+                                    style = MaterialTheme.typography.labelSmall,
+                                    fontSize = 11.sp,
+                                    fontWeight = FontWeight.Bold
+                                )
+                            }
+                        }
+
+                        CallState.Idle -> {
+                            Surface(
+                                shape = RoundedCornerShape(4.dp),
+                                color = MaterialTheme.colorScheme.surfaceVariant
+                            ) {
+                                Text(
+                                    text = callStatusMessage,
+                                    modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+                                    style = MaterialTheme.typography.labelSmall,
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 11.sp,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                            }
+                        }
                     }
                 }
             }
 
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(8.dp))
 
-            // Main Video Stage Area
+            // Main Video Stage Area: 9:16 Portrait Black Box that fills vertical height and is completely filled by the video
             Box(
                 modifier = Modifier
-                    .fillMaxWidth()
                     .weight(1f)
-                    .clip(RoundedCornerShape(10.dp))
-                    .background(Color(0xFF0D1017))
-                    .border(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f), RoundedCornerShape(10.dp)),
+                    .fillMaxHeight()
+                    .aspectRatio(9f / 16f)
+                    .align(Alignment.CenterHorizontally)
+                    .clip(RoundedCornerShape(12.dp))
+                    .background(Color(0xFF081218))
+                    .border(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.4f), RoundedCornerShape(12.dp)),
                 contentAlignment = Alignment.Center
             ) {
                 if (videoFrame != null) {
-                    // 1. Live Video Stream
+                    // 1. Live Video Stream (Completely fills the 9:16 area without any side bars)
                     Image(
                         bitmap = videoFrame,
                         contentDescription = "단말 영상",
-                        contentScale = ContentScale.Fit,
+                        contentScale = ContentScale.Crop,
                         modifier = Modifier.fillMaxSize()
                     )
 
@@ -200,7 +233,7 @@ fun VideoStagePanel(
                             // Top-Left: Live badge
                             Surface(
                                 shape = RoundedCornerShape(4.dp),
-                                color = Color.Black.copy(alpha = 0.65f),
+                                color = Color.Black.copy(alpha = 0.7f),
                                 modifier = Modifier.align(Alignment.TopStart)
                             ) {
                                 Row(
@@ -227,7 +260,7 @@ fun VideoStagePanel(
                             // Top-Right: Call Timer
                             Surface(
                                 shape = RoundedCornerShape(4.dp),
-                                color = Color.Black.copy(alpha = 0.65f),
+                                color = Color.Black.copy(alpha = 0.7f),
                                 modifier = Modifier.align(Alignment.TopEnd)
                             ) {
                                 Text(
@@ -247,7 +280,8 @@ fun VideoStagePanel(
                         is CallState.Calling -> {
                             Column(
                                 horizontalAlignment = Alignment.CenterHorizontally,
-                                verticalArrangement = Arrangement.Center
+                                verticalArrangement = Arrangement.Center,
+                                modifier = Modifier.padding(24.dp)
                             ) {
                                 CircularProgressIndicator(
                                     modifier = Modifier.size(36.dp),
@@ -259,7 +293,8 @@ fun VideoStagePanel(
                                     text = "${callState.targetPeerId} 응답 대기 중...",
                                     style = MaterialTheme.typography.titleMedium,
                                     fontWeight = FontWeight.Bold,
-                                    color = Color(0xFFFFB74D)
+                                    color = Color(0xFFFFB74D),
+                                    textAlign = TextAlign.Center
                                 )
                                 Spacer(modifier = Modifier.height(4.dp))
                                 Text(
@@ -274,7 +309,8 @@ fun VideoStagePanel(
                         is CallState.InCall -> {
                             Column(
                                 horizontalAlignment = Alignment.CenterHorizontally,
-                                verticalArrangement = Arrangement.Center
+                                verticalArrangement = Arrangement.Center,
+                                modifier = Modifier.padding(24.dp)
                             ) {
                                 CircularProgressIndicator(
                                     modifier = Modifier.size(36.dp),

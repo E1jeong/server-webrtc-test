@@ -40,7 +40,7 @@ fun EventLogPanel(
 ) {
     Card(
         modifier = modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(12.dp),
+        shape = RoundedCornerShape(10.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surface
         ),
@@ -49,7 +49,7 @@ fun EventLogPanel(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(16.dp)
+                .padding(12.dp)
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -57,44 +57,46 @@ fun EventLogPanel(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Column {
-                        Text(
-                            text = "04 · Event Log",
-                            style = MaterialTheme.typography.labelSmall,
-                            color = MaterialTheme.colorScheme.primary,
-                            fontWeight = FontWeight.Bold
-                        )
-                        Text(
-                            text = "시그널링 이벤트 로그",
-                            style = MaterialTheme.typography.titleMedium,
-                            fontWeight = FontWeight.Bold
-                        )
-                    }
-                    Spacer(modifier = Modifier.width(10.dp))
+                    Text(
+                        text = "04 · Log",
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.primary,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        text = "시그널링 이벤트",
+                        style = MaterialTheme.typography.titleSmall,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Spacer(modifier = Modifier.width(6.dp))
                     Surface(
-                        shape = RoundedCornerShape(10.dp),
+                        shape = RoundedCornerShape(8.dp),
                         color = MaterialTheme.colorScheme.surfaceVariant
                     ) {
                         Text(
                             text = "${logs.size}건",
-                            modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp),
+                            modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
                             style = MaterialTheme.typography.labelSmall,
                             fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            fontSize = 10.sp
                         )
                     }
                 }
 
                 OutlinedButton(
                     onClick = onClearLogs,
-                    shape = RoundedCornerShape(6.dp),
+                    shape = RoundedCornerShape(4.dp),
+                    contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 8.dp, vertical = 0.dp),
+                    modifier = Modifier.height(28.dp),
                     enabled = logs.isNotEmpty()
                 ) {
-                    Text("로그 지우기", style = MaterialTheme.typography.labelMedium)
+                    Text("로그 지우기", style = MaterialTheme.typography.labelSmall, fontSize = 11.sp)
                 }
             }
 
-            Spacer(modifier = Modifier.height(10.dp))
+            Spacer(modifier = Modifier.height(8.dp))
 
             Surface(
                 modifier = Modifier
@@ -115,8 +117,16 @@ fun EventLogPanel(
                         )
                     }
                 } else {
+                    val listState = androidx.compose.foundation.lazy.rememberLazyListState()
+                    androidx.compose.runtime.LaunchedEffect(logs.size) {
+                        if (logs.isNotEmpty()) {
+                            listState.animateScrollToItem(0)
+                        }
+                    }
+
                     SelectionContainer {
                         LazyColumn(
+                            state = listState,
                             modifier = Modifier
                                 .fillMaxSize()
                                 .padding(8.dp),

@@ -13,10 +13,16 @@ class I420ToImageBitmapConverter {
     private var cachedBufferedImage: BufferedImage? = null
     private var pixelBuffer: IntArray? = null
 
+    private var rotatedWidth: Int = 0
+    private var rotatedHeight: Int = 0
+    private var cachedRotatedImage: BufferedImage? = null
+
     @Synchronized
-    fun convert(i420: I420Buffer): ImageBitmap {
+    fun convert(i420: I420Buffer, rotation: Int = 0): ImageBitmap {
         val width = i420.width
         val height = i420.height
+
+        val normalizedRotation = ((rotation % 360) + 360) % 360
 
         if (cachedBufferedImage == null || currentWidth != width || currentHeight != height) {
             currentWidth = width
@@ -59,6 +65,43 @@ class I420ToImageBitmapConverter {
             }
         }
 
-        return (cachedBufferedImage ?: BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB)).toComposeImageBitmap()
+        val rawImage = cachedBufferedImage ?: BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB)
+
+        if (normalizedRotation == 0) {
+            return rawImage.toComposeImageBitmap()
+        }
+
+        val targetWidth = if (normalizedRotation == 90 || normalizedRotation == 270) height else width
+        val targetHeight = if (normalizedRotation == 90 || normalizedRotation == 270) width else height
+
+        if (cachedRotatedImage == null || rotatedWidth != targetWidth || rotatedHeight != targetHeight) {
+            rotatedWidth = targetWidth
+            rotatedHeight = targetHeight
+            cachedRotatedImage = BufferedImage(targetWidth, targetHeight, BufferedImage.TYPE_INT_ARGB)
+        }
+
+        val rotImage = cachedRotatedImage ?: BufferedImage(targetWidth, targetHeight, BufferedImage.TYPE_INT_ARGB)
+        val g2d = rotImage.createGraphics()
+        try {
+            when (normalizedRotation) {
+                90 -> {
+                    g2d.translate(targetWidth.toDouble(), 0.0)
+                    g2d.rotate(Math.toRadians(90.0))
+                }
+                180 -> {
+                    g2d.translate(targetWidth.toDouble(), targetHeight.toDouble())
+                    g2d.rotate(Math.toRadians(180.0))
+                }
+                270 -> {
+                    g2d.translate(0.0, targetHeight.toDouble())
+                    g2d.rotate(Math.toRadians(270.0))
+                }
+            }
+            g2d.drawImage(rawImage, 0, 0, null)
+        } finally {
+            g2d.dispose()
+        }
+
+        return rotImage.toComposeImageBitmap()
     }
 }

@@ -80,11 +80,25 @@ class DesktopMediaUiIntegrationTest {
                 scaleHeight: Int
             ): dev.onvoid.webrtc.media.video.VideoFrameBuffer = this
         }
-        val bitmap = converter.convert(i420Buffer)
+        val bitmap0 = converter.convert(i420Buffer, 0)
+        assertNotNull(bitmap0)
+        assertEquals(width, bitmap0.width)
+        assertEquals(height, bitmap0.height)
 
-        assertNotNull(bitmap)
-        assertEquals(width, bitmap.width)
-        assertEquals(height, bitmap.height)
+        val bitmap90 = converter.convert(i420Buffer, 90)
+        assertNotNull(bitmap90)
+        assertEquals(height, bitmap90.width)
+        assertEquals(width, bitmap90.height)
+
+        val bitmap180 = converter.convert(i420Buffer, 180)
+        assertNotNull(bitmap180)
+        assertEquals(width, bitmap180.width)
+        assertEquals(height, bitmap180.height)
+
+        val bitmap270 = converter.convert(i420Buffer, 270)
+        assertNotNull(bitmap270)
+        assertEquals(height, bitmap270.width)
+        assertEquals(width, bitmap270.height)
     }
 
     @Test

@@ -20,7 +20,7 @@ class WebrtcVideoRendererSink : VideoTrackSink {
         val buffer = frame.buffer ?: return
         val i420 = buffer.toI420()
         try {
-            val bitmap = converter.convert(i420)
+            val bitmap = converter.convert(i420, frame.rotation)
             _videoFrame.value = bitmap
         } finally {
             i420.release()

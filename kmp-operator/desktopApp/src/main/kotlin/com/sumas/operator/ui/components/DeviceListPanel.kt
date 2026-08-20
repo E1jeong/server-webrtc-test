@@ -58,49 +58,43 @@ fun DeviceListPanel(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(16.dp)
+                .padding(12.dp)
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Column {
+                Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
                         text = "02 · Target",
                         style = MaterialTheme.typography.labelSmall,
                         color = MaterialTheme.colorScheme.primary,
                         fontWeight = FontWeight.Bold
                     )
+                    Spacer(modifier = Modifier.width(8.dp))
                     Text(
                         text = "단말 목록",
-                        style = MaterialTheme.typography.titleMedium,
+                        style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.Bold
                     )
                 }
 
                 Surface(
-                    shape = RoundedCornerShape(12.dp),
+                    shape = RoundedCornerShape(10.dp),
                     color = MaterialTheme.colorScheme.primaryContainer
                 ) {
                     Text(
                         text = "${devices.size}대",
-                        modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp),
-                        style = MaterialTheme.typography.labelMedium,
+                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp),
+                        style = MaterialTheme.typography.labelSmall,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onPrimaryContainer
                     )
                 }
             }
 
-            Spacer(modifier = Modifier.height(6.dp))
-            Text(
-                text = "통화할 안드로이드 단말을 선택합니다.",
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-
-            Spacer(modifier = Modifier.height(14.dp))
+            Spacer(modifier = Modifier.height(8.dp))
 
             if (devices.isEmpty()) {
                 Box(
@@ -111,24 +105,23 @@ fun DeviceListPanel(
                             MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f),
                             shape = RoundedCornerShape(8.dp)
                         )
-                        .padding(24.dp),
+                        .padding(16.dp),
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
                         text = if (connectionStatus == ConnectionStatus.REGISTERED)
-                            "현재 온라인 상태인 단말이 없습니다.\n단말기 앱을 실행하고 동일 서버에 접속해 주세요."
+                            "현재 온라인 상태인 단말이 없습니다."
                         else
                             "서버에 연결되면 접속된 단말 목록이 표시됩니다.",
                         textAlign = TextAlign.Center,
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        lineHeight = 20.sp
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
             } else {
                 LazyColumn(
                     modifier = Modifier.weight(1f),
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                    verticalArrangement = Arrangement.spacedBy(6.dp)
                 ) {
                     items(devices, key = { it.peerId }) { device ->
                         DeviceItemCard(
@@ -154,81 +147,87 @@ private fun DeviceItemCard(
     onInvite: () -> Unit
 ) {
     Surface(
-        shape = RoundedCornerShape(8.dp),
-        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
+        shape = RoundedCornerShape(6.dp),
+        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.4f),
         border = BorderStroke(
             1.dp,
             if (isInCallWithThis) Color(0xFF388E3C)
             else if (isCallingThis) Color(0xFFFFA000)
-            else MaterialTheme.colorScheme.outlineVariant
+            else MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.6f)
         ),
         modifier = Modifier.fillMaxWidth()
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 14.dp, vertical = 10.dp),
+                .padding(horizontal = 10.dp, vertical = 6.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Box(
                     modifier = Modifier
-                        .size(8.dp)
+                        .size(7.dp)
                         .clip(CircleShape)
                         .background(Color(0xFF388E3C))
                 )
-                Spacer(modifier = Modifier.width(10.dp))
+                Spacer(modifier = Modifier.width(8.dp))
                 Column {
                     Text(
                         text = peer.peerId,
-                        style = MaterialTheme.typography.bodyMedium,
-                        fontWeight = FontWeight.Bold
+                        style = MaterialTheme.typography.bodySmall,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 12.sp
                     )
                     Text(
                         text = "device",
                         style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        fontSize = 10.sp
                     )
                 }
             }
 
             if (isInCallWithThis) {
                 Surface(
-                    shape = RoundedCornerShape(6.dp),
+                    shape = RoundedCornerShape(4.dp),
                     color = Color(0xFF388E3C).copy(alpha = 0.15f)
                 ) {
                     Text(
                         text = "통화 중",
-                        modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp),
+                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 3.dp),
                         color = Color(0xFF2E7D32),
                         fontWeight = FontWeight.Bold,
-                        style = MaterialTheme.typography.labelMedium
+                        style = MaterialTheme.typography.labelSmall,
+                        fontSize = 11.sp
                     )
                 }
             } else if (isCallingThis) {
                 Surface(
-                    shape = RoundedCornerShape(6.dp),
+                    shape = RoundedCornerShape(4.dp),
                     color = Color(0xFFFFA000).copy(alpha = 0.15f)
                 ) {
                     Text(
                         text = "연결 시도 중",
-                        modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp),
+                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 3.dp),
                         color = Color(0xFFE65100),
                         fontWeight = FontWeight.Bold,
-                        style = MaterialTheme.typography.labelMedium
+                        style = MaterialTheme.typography.labelSmall,
+                        fontSize = 11.sp
                     )
                 }
             } else {
                 Button(
                     onClick = onInvite,
                     enabled = canInvite,
-                    shape = RoundedCornerShape(6.dp),
+                    shape = RoundedCornerShape(4.dp),
+                    contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 10.dp, vertical = 0.dp),
+                    modifier = Modifier.height(30.dp),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.primary
                     )
                 ) {
-                    Text("통화 요청", style = MaterialTheme.typography.labelMedium, fontWeight = FontWeight.Bold)
+                    Text("통화 요청", style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.Bold, fontSize = 11.sp)
                 }
             }
         }
