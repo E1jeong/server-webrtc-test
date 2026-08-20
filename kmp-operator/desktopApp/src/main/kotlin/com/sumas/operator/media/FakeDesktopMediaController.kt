@@ -1,5 +1,9 @@
 package com.sumas.operator.media
 
+import androidx.compose.ui.graphics.ImageBitmap
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import java.util.concurrent.CopyOnWriteArrayList
 
 class FakeDesktopMediaController(
@@ -8,6 +12,9 @@ class FakeDesktopMediaController(
     var mockOfferSdp: String = "v=0\r\no=- 12345 2 IN IP4 127.0.0.1\r\ns=-\r\nt=0 0\r\nm=video 9 UDP/TLS/RTP/SAVPF 96\r\n",
     var mockIceCandidate: String = "candidate:1 1 UDP 2130706431 127.0.0.1 50000 typ host"
 ) : DesktopMediaController {
+
+    private val _remoteVideoFrame = MutableStateFlow<ImageBitmap?>(null)
+    override val remoteVideoFrame: StateFlow<ImageBitmap?> = _remoteVideoFrame.asStateFlow()
 
     private var listener: DesktopMediaListener? = null
 
@@ -114,5 +121,9 @@ class FakeDesktopMediaController(
 
     fun emitStatus(status: String) {
         listener?.onMediaStatusChanged(status)
+    }
+
+    fun setMockVideoFrame(frame: ImageBitmap?) {
+        _remoteVideoFrame.value = frame
     }
 }

@@ -2,13 +2,14 @@ package com.sumas.operator.state
 
 import com.sumas.operator.media.DesktopMediaController
 import com.sumas.operator.media.DesktopMediaListener
-import com.sumas.operator.media.FakeDesktopMediaController
+import com.sumas.operator.media.webrtc.WebrtcDesktopMediaController
 import com.sumas.operator.model.CallState
 import com.sumas.operator.model.ConnectionStatus
 import com.sumas.operator.model.LogDirection
 import com.sumas.operator.signaling.DesktopWebSocketClient
 import com.sumas.operator.signaling.SignalingListener
 import com.sumas.operator.signaling.SignalingMessage
+import androidx.compose.ui.graphics.ImageBitmap
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -23,12 +24,13 @@ import java.time.format.DateTimeFormatter
 class DesktopOperatorManager(
     initialState: OperatorState = OperatorState(),
     private val client: DesktopWebSocketClient = DesktopWebSocketClient(),
-    val mediaController: DesktopMediaController = FakeDesktopMediaController()
+    val mediaController: DesktopMediaController = WebrtcDesktopMediaController()
 ) : SignalingListener, DesktopMediaListener {
 
     private val scope = CoroutineScope(Dispatchers.Default + SupervisorJob())
     private val _state = MutableStateFlow(initialState)
     val state: StateFlow<OperatorState> = _state.asStateFlow()
+    val remoteVideoFrame: StateFlow<ImageBitmap?> get() = mediaController.remoteVideoFrame
 
     private val timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss")
 
@@ -236,6 +238,7 @@ class DesktopOperatorManager(
     fun cleanup() {
         mediaController.setListener(null)
         mediaController.stopCall()
+        (mediaController as? WebrtcDesktopMediaController)?.release()
         disconnect()
         scope.cancel()
     }

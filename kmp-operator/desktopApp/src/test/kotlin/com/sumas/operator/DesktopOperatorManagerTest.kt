@@ -1,5 +1,6 @@
 package com.sumas.operator
 
+import com.sumas.operator.media.FakeDesktopMediaController
 import com.sumas.operator.model.CallState
 import com.sumas.operator.model.ConnectionStatus
 import com.sumas.operator.model.LogDirection
@@ -10,13 +11,14 @@ import com.sumas.operator.state.DesktopOperatorManager
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertIs
+import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 class DesktopOperatorManagerTest {
 
     @Test
     fun testManagerUpdatesUrlAndOperatorId() {
-        val manager = DesktopOperatorManager()
+        val manager = DesktopOperatorManager(mediaController = FakeDesktopMediaController())
         assertEquals("ws://localhost:8080/ws", manager.state.value.serverUrl)
         assertEquals("operator-test-01", manager.state.value.operatorId)
 
@@ -29,7 +31,7 @@ class DesktopOperatorManagerTest {
 
     @Test
     fun testSignalingListenerCallbacksTriggerStateUpdates() {
-        val manager = DesktopOperatorManager()
+        val manager = DesktopOperatorManager(mediaController = FakeDesktopMediaController())
 
         // 1. Connection status change
         manager.onConnectionStatusChanged(ConnectionStatus.CONNECTING)
@@ -60,7 +62,7 @@ class DesktopOperatorManagerTest {
 
     @Test
     fun testInviteAndHangupTransitions() {
-        val manager = DesktopOperatorManager()
+        val manager = DesktopOperatorManager(mediaController = FakeDesktopMediaController())
         manager.onConnectionStatusChanged(ConnectionStatus.REGISTERED)
         manager.onMessageReceived(
             SignalingMessage.RegisteredMessage(
@@ -89,5 +91,12 @@ class DesktopOperatorManagerTest {
         manager.hangup()
         assertEquals(CallState.Idle, manager.state.value.callState)
         assertEquals("통화 종료됨", manager.state.value.callStatusMessage)
+    }
+
+    @Test
+    fun testRemoteVideoFrameFlowExposed() {
+        val fakeMedia = FakeDesktopMediaController()
+        val manager = DesktopOperatorManager(mediaController = fakeMedia)
+        assertNull(manager.remoteVideoFrame.value)
     }
 }

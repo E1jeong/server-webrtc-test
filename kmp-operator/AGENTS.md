@@ -17,6 +17,7 @@
   - Desktop Media Controller: [desktopApp/.../DesktopMediaController.kt](file:///C:/Users/Unionbiometrics/Desktop/company/11.server/ubio-webrtc/kmp-operator/desktopApp/src/main/kotlin/com/sumas/operator/media/DesktopMediaController.kt)
   - WebRTC Desktop Media Controller: [desktopApp/.../WebrtcDesktopMediaController.kt](file:///C:/Users/Unionbiometrics/Desktop/company/11.server/ubio-webrtc/kmp-operator/desktopApp/src/main/kotlin/com/sumas/operator/media/webrtc/WebrtcDesktopMediaController.kt)
   - WebRTC Video Renderer Sink: [desktopApp/.../WebrtcVideoRendererSink.kt](file:///C:/Users/Unionbiometrics/Desktop/company/11.server/ubio-webrtc/kmp-operator/desktopApp/src/main/kotlin/com/sumas/operator/media/webrtc/WebrtcVideoRendererSink.kt)
+  - Video Stage Panel UI: [desktopApp/.../VideoStagePanel.kt](file:///C:/Users/Unionbiometrics/Desktop/company/11.server/ubio-webrtc/kmp-operator/desktopApp/src/main/kotlin/com/sumas/operator/ui/components/VideoStagePanel.kt)
   - Desktop Console UI: [desktopApp/.../OperatorConsoleScreen.kt](file:///C:/Users/Unionbiometrics/Desktop/company/11.server/ubio-webrtc/kmp-operator/desktopApp/src/main/kotlin/com/sumas/operator/ui/OperatorConsoleScreen.kt)
   - Entrypoint: [desktopApp/.../main.kt](file:///C:/Users/Unionbiometrics/Desktop/company/11.server/ubio-webrtc/kmp-operator/desktopApp/src/main/kotlin/com/sumas/operator/main.kt)
 

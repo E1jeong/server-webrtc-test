@@ -18,11 +18,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.sumas.operator.state.DesktopOperatorManager
-import com.sumas.operator.ui.components.CallControlPanel
 import com.sumas.operator.ui.components.ConnectionPanel
 import com.sumas.operator.ui.components.DeviceListPanel
 import com.sumas.operator.ui.components.EventLogPanel
 import com.sumas.operator.ui.components.TopBar
+import com.sumas.operator.ui.components.VideoStagePanel
 
 private val ConsoleDarkColorScheme = darkColorScheme(
     primary = Color(0xFF64B5F6),
@@ -43,6 +43,7 @@ fun OperatorConsoleScreen(
     modifier: Modifier = Modifier
 ) {
     val state by manager.state.collectAsState()
+    val videoFrame by manager.remoteVideoFrame.collectAsState()
 
     MaterialTheme(colorScheme = ConsoleDarkColorScheme) {
         Column(
@@ -71,31 +72,41 @@ fun OperatorConsoleScreen(
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .weight(1.1f),
+                        .weight(1f),
                     horizontalArrangement = Arrangement.spacedBy(14.dp)
                 ) {
-                    DeviceListPanel(
-                        devices = state.devices,
-                        connectionStatus = state.connectionStatus,
-                        callState = state.callState,
-                        onInviteDevice = { manager.invite(it) },
-                        modifier = Modifier.weight(1f)
-                    )
-
-                    CallControlPanel(
+                    // Left Column: Video Stage (02 · Audio / Video)
+                    VideoStagePanel(
+                        videoFrame = videoFrame,
                         callState = state.callState,
                         callStatusMessage = state.callStatusMessage,
                         onHangup = { manager.hangup() },
                         onToggleMicrophoneMute = { manager.toggleMicrophoneMute() },
-                        modifier = Modifier.weight(1f)
+                        modifier = Modifier.weight(1.35f)
                     )
-                }
 
-                EventLogPanel(
-                    logs = state.logs,
-                    onClearLogs = { manager.clearLogs() },
-                    modifier = Modifier.weight(1f)
-                )
+                    // Right Column: Devices (03) & Logs (04)
+                    Column(
+                        modifier = Modifier
+                            .weight(1f)
+                            .fillMaxSize(),
+                        verticalArrangement = Arrangement.spacedBy(14.dp)
+                    ) {
+                        DeviceListPanel(
+                            devices = state.devices,
+                            connectionStatus = state.connectionStatus,
+                            callState = state.callState,
+                            onInviteDevice = { manager.invite(it) },
+                            modifier = Modifier.weight(1f)
+                        )
+
+                        EventLogPanel(
+                            logs = state.logs,
+                            onClearLogs = { manager.clearLogs() },
+                            modifier = Modifier.weight(1.1f)
+                        )
+                    }
+                }
             }
         }
     }

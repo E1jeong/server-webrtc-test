@@ -11,15 +11,20 @@ import dev.onvoid.webrtc.RTCOfferOptions
 import dev.onvoid.webrtc.RTCPeerConnection
 import dev.onvoid.webrtc.RTCPeerConnectionState
 import dev.onvoid.webrtc.RTCRtpTransceiver
+import dev.onvoid.webrtc.RTCRtpTransceiverDirection
+import dev.onvoid.webrtc.RTCRtpTransceiverInit
 import dev.onvoid.webrtc.RTCSdpType
 import dev.onvoid.webrtc.RTCSessionDescription
 import dev.onvoid.webrtc.SetSessionDescriptionObserver
 import dev.onvoid.webrtc.media.MediaDevices
+import dev.onvoid.webrtc.media.MediaType
 import dev.onvoid.webrtc.media.audio.AudioOptions
 import dev.onvoid.webrtc.media.audio.AudioTrack
 import dev.onvoid.webrtc.media.audio.AudioTrackSource
 import dev.onvoid.webrtc.media.video.VideoDeviceSource
 import dev.onvoid.webrtc.media.video.VideoTrack
+import androidx.compose.ui.graphics.ImageBitmap
+import kotlinx.coroutines.flow.StateFlow
 import java.util.Collections
 
 class WebrtcDesktopMediaController : DesktopMediaController {
@@ -34,6 +39,7 @@ class WebrtcDesktopMediaController : DesktopMediaController {
     private var videoTrack: VideoTrack? = null
 
     val remoteVideoSink = WebrtcVideoRendererSink()
+    override val remoteVideoFrame: StateFlow<ImageBitmap?> get() = remoteVideoSink.videoFrame
 
     private var activeCallId: String? = null
     private var activeTargetDeviceId: String? = null
