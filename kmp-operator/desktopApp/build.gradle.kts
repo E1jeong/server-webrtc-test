@@ -27,9 +27,22 @@ compose.desktop {
         mainClass = "com.sumas.operator.MainKt"
 
         nativeDistributions {
-            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-            packageName = "com.sumas.operator"
+            targetFormats(TargetFormat.Msi, TargetFormat.Exe)
+            packageName = "UBioWebRtcOperator"
             packageVersion = "1.0.0"
+            description = "UBio WebRTC Desktop Operator Console"
+            vendor = "Union Community"
+            copyright = "© 2026 Union Community. All rights reserved."
+
+            modules("java.instrument", "java.net.http", "jdk.unsupported")
+
+            windows {
+                menuGroup = "UBio WebRTC"
+                upgradeUuid = "1879308e-1779-4d69-a1b7-e23a4128f9d1"
+                shortcut = true
+                dirChooser = true
+                perUserInstall = true
+            }
         }
     }
 }

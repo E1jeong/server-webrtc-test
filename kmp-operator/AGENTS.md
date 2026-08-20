@@ -45,4 +45,10 @@ cd kmp-operator
 
 # Run all tests
 .\gradlew.bat test
+
+# Build standalone Windows distribution (unpacked directory with embedded JRE & DLLs)
+.\gradlew.bat desktopApp:createDistributable
+
+# Build Windows MSI installer package
+.\gradlew.bat desktopApp:packageMsi
 ```
