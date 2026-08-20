@@ -100,6 +100,17 @@ class OperatorReducerTest {
         val mutedCallState = assertIs<CallState.InCall>(state.callState)
         assertTrue(mutedCallState.isMicrophoneMuted)
 
+        // 3-1. Media ready update
+        state = OperatorReducer.reduce(state, OperatorAction.UpdateMediaReady(true))
+        val readyCallState = assertIs<CallState.InCall>(state.callState)
+        assertTrue(readyCallState.isMediaReady)
+
+        // 3-2. Status text update
+        state = OperatorReducer.reduce(state, OperatorAction.UpdateCallStatusText("단말 미디어 수신 중"))
+        val statusCallState = assertIs<CallState.InCall>(state.callState)
+        assertEquals("단말 미디어 수신 중", statusCallState.statusText)
+        assertEquals("단말 미디어 수신 중", state.callStatusMessage)
+
         // 4. Remote hangup
         val hangup = SignalingMessage.CallHangupMessage(
             callId = "call-operator-01-1",

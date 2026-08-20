@@ -45,6 +45,12 @@ object OperatorReducer {
                     else -> state
                 }
             }
+            is OperatorAction.UpdateMediaReady -> {
+                when (val call = state.callState) {
+                    is CallState.InCall -> state.copy(callState = call.copy(isMediaReady = action.isReady))
+                    else -> state
+                }
+            }
             is OperatorAction.UpdateCallStatusText -> {
                 val nextCallState = when (val call = state.callState) {
                     is CallState.InCall -> call.copy(statusText = action.statusText)

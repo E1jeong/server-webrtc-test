@@ -12,6 +12,7 @@ sealed interface OperatorAction {
     data class SendInvite(val targetDeviceId: String) : OperatorAction
     data object Hangup : OperatorAction
     data class ToggleMicrophoneMute(val isMuted: Boolean) : OperatorAction
+    data class UpdateMediaReady(val isReady: Boolean) : OperatorAction
     data class UpdateCallStatusText(val statusText: String) : OperatorAction
     data class AddLog(val time: String, val direction: LogDirection, val payload: String) : OperatorAction
     data object ClearLogs : OperatorAction

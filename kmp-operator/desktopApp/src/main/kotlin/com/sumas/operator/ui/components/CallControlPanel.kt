@@ -18,6 +18,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -41,6 +42,7 @@ fun CallControlPanel(
     callState: CallState,
     callStatusMessage: String,
     onHangup: () -> Unit,
+    onToggleMicrophoneMute: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     Card(
@@ -163,7 +165,7 @@ fun CallControlPanel(
                                 color = Color(0xFF388E3C).copy(alpha = 0.15f)
                             ) {
                                 Text(
-                                    text = "● 통화 연결됨",
+                                    text = "● ${callState.statusText}",
                                     modifier = Modifier.padding(horizontal = 12.dp, vertical = 4.dp),
                                     style = MaterialTheme.typography.labelMedium,
                                     fontWeight = FontWeight.Bold,
@@ -192,12 +194,31 @@ fun CallControlPanel(
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
                             Spacer(modifier = Modifier.height(14.dp))
-                            Button(
-                                onClick = onHangup,
-                                shape = RoundedCornerShape(8.dp),
-                                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFD32F2F))
+
+                            Row(
+                                horizontalArrangement = Arrangement.Center,
+                                verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Text("통화 종료", fontWeight = FontWeight.Bold)
+                                OutlinedButton(
+                                    onClick = onToggleMicrophoneMute,
+                                    enabled = callState.isMediaReady,
+                                    shape = RoundedCornerShape(8.dp)
+                                ) {
+                                    Text(
+                                        text = if (callState.isMicrophoneMuted) "마이크 켜기" else "마이크 끄기",
+                                        fontWeight = FontWeight.SemiBold
+                                    )
+                                }
+
+                                Spacer(modifier = Modifier.width(10.dp))
+
+                                Button(
+                                    onClick = onHangup,
+                                    shape = RoundedCornerShape(8.dp),
+                                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFD32F2F))
+                                ) {
+                                    Text("통화 종료", fontWeight = FontWeight.Bold)
+                                }
                             }
                         }
                     }
@@ -206,7 +227,7 @@ fun CallControlPanel(
 
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = "※ 2단계 시그널링 검증 모드 (화상/음성 미디어는 3~5단계 연동 예정)",
+                text = "※ 3단계 미디어 제어 경계 모드 (WebRTC Offer/Answer/ICE 오케스트레이션 검증 중)",
                 style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 fontSize = 11.sp

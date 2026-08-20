@@ -13,6 +13,7 @@ sealed interface CallState {
         val peerId: String,
         val callId: String,
         val statusText: String = "통화 중",
-        val isMicrophoneMuted: Boolean = false
+        val isMicrophoneMuted: Boolean = false,
+        val isMediaReady: Boolean = false
     ) : CallState
 }

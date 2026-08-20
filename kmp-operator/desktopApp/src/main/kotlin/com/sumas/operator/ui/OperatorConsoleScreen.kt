@@ -86,6 +86,7 @@ fun OperatorConsoleScreen(
                         callState = state.callState,
                         callStatusMessage = state.callStatusMessage,
                         onHangup = { manager.hangup() },
+                        onToggleMicrophoneMute = { manager.toggleMicrophoneMute() },
                         modifier = Modifier.weight(1f)
                     )
                 }
