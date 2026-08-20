@@ -1,17 +1,29 @@
-# UBio WebRTC PoC
+# UBio WebRTC Proof of Concept
 
-UBio 단말과 operator browser 사이의 1:1 WebRTC 통화를 검증하는 LAN 전용 모노레포입니다.
+This monorepo provides a LAN-only proof of concept for one-to-one WebRTC audio and video calls between the UBio Android test device and the Windows Desktop operator console.
 
-## 구성
+The KMP Desktop operator is the active development client. Its end-to-end LAN call path, including bidirectional audio and video, has been verified with the Android test device. The browser operator remains in this repository only as a frozen reference implementation and must not receive feature or UI development unless explicitly requested.
 
-- `signaling-server/`: Peer 등록, 통화 제어, SDP/ICE 중계를 담당하는 Node.js WebSocket 서버
-- `operator-web/`: 온라인 단말 목록, 통화 UI와 browser WebRTC Peer를 제공하는 vinext 웹
+## Components
 
-Android 단말 구현은 별도 `android-anti-spoofing-lab` 저장소에서 관리합니다.
+- `signaling-server/` — Node.js WebSocket relay for peer registration, call control, SDP, and ICE messages.
+- `kmp-operator/` — Kotlin Multiplatform Windows Desktop operator console, including the WebRTC media path and Windows packaging configuration.
+- `operator-web/` — Frozen React browser reference client for regression comparison only; it is not under active development.
 
-## 실행
+The Android test-device implementation is maintained separately in the `android-anti-spoofing-lab` repository.
 
-### Signaling server
+## Current Scope
+
+- Trusted-LAN, fixed test peers
+- Operator-initiated calls with Android auto-accept
+- SDP Offer/Answer and trickle ICE signaling
+- Bidirectional video and audio
+- Microphone mute and media-track cleanup
+- KMP Desktop operator packaging for Windows
+
+STUN/TURN, authentication, HTTPS/WSS, and production deployment policy are outside the current proof-of-concept scope. Long-running call stability, reconnection, audio-device selection, and remaining hardware edge cases still require verification.
+
+## Run the Signaling Server
 
 ```powershell
 cd signaling-server
@@ -20,32 +32,34 @@ npm test
 npm start
 ```
 
-Docker로 실행하려면:
+To run it with Docker:
 
 ```powershell
 cd signaling-server
 docker compose up -d --build
 ```
 
-### Operator web
+## Run the KMP Desktop Operator
+
+```powershell
+cd kmp-operator
+.\gradlew.bat :desktopApp:run
+```
+
+Run the KMP test suites with:
+
+```powershell
+cd kmp-operator
+.\gradlew.bat test
+.\gradlew.bat desktopApp:test
+```
+
+## Reference Browser Operator
+
+`operator-web/` is retained only for behavior comparison and regression checks. Do not modify it for normal development work. If an explicit reference-client check is needed on the Windows development PC, it must run on `127.0.0.1:3019`:
 
 ```powershell
 cd operator-web
-npm install
 npm test
 npm run dev -- --port 3019 --hostname 127.0.0.1
 ```
-
-Windows 개발 PC에서는 기본 3000번 포트가 제외 범위와 충돌할 수 있어 3019번을 사용합니다.
-
-## 현재 범위
-
-- 같은 신뢰 LAN의 고정 test Peer
-- operator 발신, Android 자동 수락
-- SDP Offer/Answer와 trickle ICE
-- 양방향 영상·음성
-- browser와 Android 마이크 음소거
-- browser 미디어 제약 및 Android WebRTC 오디오 처리 기반 에코 제거·노이즈 억제
-- Android 음성통화 오디오 포커스, 스피커 라우팅과 종료 시 복구
-
-STUN/TURN, 인증, HTTPS/WSS와 운영 배포는 아직 구현하지 않았습니다. 실제 장비의 에코·하울링·볼륨·오디오 포커스 전환은 별도 검증이 필요합니다.

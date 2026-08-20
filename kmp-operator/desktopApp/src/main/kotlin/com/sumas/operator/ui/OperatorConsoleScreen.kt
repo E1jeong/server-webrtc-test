@@ -1,20 +1,30 @@
 package com.sumas.operator.ui
 
 import androidx.compose.foundation.background
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
@@ -45,75 +55,97 @@ fun OperatorConsoleScreen(
 ) {
     val state by manager.state.collectAsState()
     val videoFrame by manager.remoteVideoFrame.collectAsState()
+    var isEventLogVisible by remember { mutableStateOf(false) }
 
     MaterialTheme(colorScheme = ConsoleDarkColorScheme) {
-        Column(
+        Box(
             modifier = modifier
                 .fillMaxSize()
                 .background(MaterialTheme.colorScheme.background)
         ) {
-            TopBar(status = state.connectionStatus)
-
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(12.dp),
-                verticalArrangement = Arrangement.spacedBy(10.dp)
-            ) {
-                ConnectionPanel(
-                    serverUrl = state.serverUrl,
-                    operatorId = state.operatorId,
-                    connectionStatus = state.connectionStatus,
-                    onUrlChange = { manager.updateServerUrl(it) },
-                    onOperatorIdChange = { manager.updateOperatorId(it) },
-                    onConnect = { manager.connect() },
-                    onDisconnect = { manager.disconnect() }
+            Column(modifier = Modifier.fillMaxSize()) {
+                TopBar(
+                    status = state.connectionStatus,
+                    eventLogCount = state.logs.size,
+                    onOpenEventLog = { isEventLogVisible = true }
                 )
 
-                // Main Workspace: Left Video Stage + Right (Devices + Event Log)
-                Row(
+                Column(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .weight(1f),
-                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+                        .fillMaxSize()
+                        .padding(12.dp),
+                    verticalArrangement = Arrangement.spacedBy(10.dp)
                 ) {
-                    // Left Column: 02 · Audio / Video (Large Tall 9:16 Video Stage)
-                    VideoStagePanel(
-                        videoFrame = videoFrame,
-                        callState = state.callState,
-                        callStatusMessage = state.callStatusMessage,
-                        onHangup = { manager.hangup() },
-                        onToggleMicrophoneMute = { manager.toggleMicrophoneMute() },
+                    // Main Workspace: Left Video Stage + Right (Connection + Devices)
+                    Row(
                         modifier = Modifier
-                            .weight(1.35f)
-                            .fillMaxHeight()
-                    )
-
-                    // Right Column: 03 · Devices (Top) + 04 · Event Log (Bottom)
-                    Column(
-                        modifier = Modifier
-                            .weight(1f)
-                            .fillMaxHeight(),
-                        verticalArrangement = Arrangement.spacedBy(14.dp)
+                            .fillMaxWidth()
+                            .weight(1f),
+                        horizontalArrangement = Arrangement.spacedBy(10.dp)
                     ) {
-                        DeviceListPanel(
-                            devices = state.devices,
-                            connectionStatus = state.connectionStatus,
+                        VideoStagePanel(
+                            videoFrame = videoFrame,
                             callState = state.callState,
-                            onInviteDevice = { manager.invite(it) },
+                            callStatusMessage = state.callStatusMessage,
+                            onHangup = { manager.hangup() },
+                            onToggleMicrophoneMute = { manager.toggleMicrophoneMute() },
                             modifier = Modifier
-                                .fillMaxWidth()
-                                .weight(1f)
+                                .weight(1.35f)
+                                .fillMaxHeight()
                         )
 
-                        EventLogPanel(
-                            logs = state.logs,
-                            onClearLogs = { manager.clearLogs() },
+                        Column(
                             modifier = Modifier
-                                .fillMaxWidth()
-                                .weight(1.15f)
-                        )
+                                .weight(1f)
+                                .fillMaxHeight(),
+                            verticalArrangement = Arrangement.spacedBy(14.dp)
+                        ) {
+                            ConnectionPanel(
+                                serverUrl = state.serverUrl,
+                                operatorId = state.operatorId,
+                                connectionStatus = state.connectionStatus,
+                                onUrlChange = { manager.updateServerUrl(it) },
+                                onOperatorIdChange = { manager.updateOperatorId(it) },
+                                onConnect = { manager.connect() },
+                                onDisconnect = { manager.disconnect() },
+                                modifier = Modifier.fillMaxWidth()
+                            )
+
+                            DeviceListPanel(
+                                devices = state.devices,
+                                connectionStatus = state.connectionStatus,
+                                callState = state.callState,
+                                onInviteDevice = { manager.invite(it) },
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .weight(1f)
+                            )
+                        }
                     }
+                }
+            }
+
+            AnimatedVisibility(
+                visible = isEventLogVisible,
+                modifier = Modifier.align(Alignment.CenterEnd),
+                enter = slideInHorizontally(initialOffsetX = { it }) + fadeIn(),
+                exit = slideOutHorizontally(targetOffsetX = { it }) + fadeOut()
+            ) {
+                Surface(
+                    modifier = Modifier
+                        .fillMaxHeight()
+                        .width(420.dp),
+                    color = MaterialTheme.colorScheme.background,
+                    shadowElevation = 12.dp
+                ) {
+                    EventLogPanel(
+                        logs = state.logs,
+                        onClearLogs = { manager.clearLogs() },
+                        onClose = { isEventLogVisible = false },
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(12.dp)
+                    )
                 }
             }
         }

@@ -118,14 +118,14 @@ fun VideoStagePanel(
                                 )
                             }
 
-                            Button(
+                            OutlinedButton(
                                 onClick = onHangup,
                                 shape = RoundedCornerShape(4.dp),
-                                contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 10.dp, vertical = 0.dp),
+                                colors = ButtonDefaults.outlinedButtonColors(
+                                    contentColor = Color(0xFFD32F2F)
+                                ),
+                                contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 14.dp, vertical = 0.dp),
                                 modifier = Modifier.height(28.dp),
-                                colors = ButtonDefaults.buttonColors(
-                                    containerColor = Color(0xFFD32F2F)
-                                )
                             ) {
                                 Text(
                                     text = "통화 종료",
@@ -151,14 +151,14 @@ fun VideoStagePanel(
                                 )
                             }
 
-                            Button(
+                            OutlinedButton(
                                 onClick = onHangup,
                                 shape = RoundedCornerShape(4.dp),
-                                contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 8.dp, vertical = 0.dp),
+                                colors = ButtonDefaults.outlinedButtonColors(
+                                    contentColor = Color(0xFFD32F2F)
+                                ),
+                                contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 14.dp, vertical = 0.dp),
                                 modifier = Modifier.height(28.dp),
-                                colors = ButtonDefaults.buttonColors(
-                                    containerColor = Color(0xFFD32F2F)
-                                )
                             ) {
                                 Text(
                                     text = "통화 취소",
@@ -371,13 +371,6 @@ fun VideoStagePanel(
                 }
             }
 
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(
-                text = "※ P2P WebRTC Direct LAN 통화 · 비디오 및 양방향 오디오 활성화",
-                style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                fontSize = 11.sp
-            )
         }
     }
 }

@@ -36,6 +36,7 @@ import com.sumas.operator.model.LogDirection
 fun EventLogPanel(
     logs: List<EventLog>,
     onClearLogs: () -> Unit,
+    onClose: (() -> Unit)? = null,
     modifier: Modifier = Modifier
 ) {
     Card(
@@ -85,14 +86,27 @@ fun EventLogPanel(
                     }
                 }
 
-                OutlinedButton(
-                    onClick = onClearLogs,
-                    shape = RoundedCornerShape(4.dp),
-                    contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 8.dp, vertical = 0.dp),
-                    modifier = Modifier.height(28.dp),
-                    enabled = logs.isNotEmpty()
-                ) {
-                    Text("로그 지우기", style = MaterialTheme.typography.labelSmall, fontSize = 11.sp)
+                Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                    OutlinedButton(
+                        onClick = onClearLogs,
+                        shape = RoundedCornerShape(4.dp),
+                        contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 8.dp, vertical = 0.dp),
+                        modifier = Modifier.height(28.dp),
+                        enabled = logs.isNotEmpty()
+                    ) {
+                        Text("로그 지우기", style = MaterialTheme.typography.labelSmall, fontSize = 11.sp)
+                    }
+
+                    if (onClose != null) {
+                        OutlinedButton(
+                            onClick = onClose,
+                            shape = RoundedCornerShape(4.dp),
+                            contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 8.dp, vertical = 0.dp),
+                            modifier = Modifier.height(28.dp)
+                        ) {
+                            Text("닫기", style = MaterialTheme.typography.labelSmall, fontSize = 11.sp)
+                        }
+                    }
                 }
             }
 

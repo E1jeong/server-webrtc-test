@@ -55,37 +55,27 @@ fun ConnectionPanel(
         Column(modifier = Modifier.padding(12.dp)) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text(
-                        text = "01 · Signaling",
-                        style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.primary,
-                        fontWeight = FontWeight.Bold
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(
-                        text = "서버 연결",
-                        style = MaterialTheme.typography.titleSmall,
-                        fontWeight = FontWeight.Bold
-                    )
-                }
-
                 Text(
-                    text = "Signaling 서버 Operator 등록",
+                    text = "01 · Signaling",
                     style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    fontSize = 11.sp
+                    color = MaterialTheme.colorScheme.primary,
+                    fontWeight = FontWeight.Bold
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    text = "서버 연결",
+                    style = MaterialTheme.typography.titleSmall,
+                    fontWeight = FontWeight.Bold
                 )
             }
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            Row(
+            Column(
                 modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
+                verticalArrangement = Arrangement.spacedBy(6.dp)
             ) {
                 OutlinedTextField(
                     value = serverUrl,
@@ -97,10 +87,8 @@ fun ConnectionPanel(
                     enabled = !isConnectedOrConnecting,
                     keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
                     keyboardActions = KeyboardActions(onDone = { if (!isConnectedOrConnecting) onConnect() }),
-                    modifier = Modifier.weight(3.2f)
+                    modifier = Modifier.fillMaxWidth()
                 )
-
-                Spacer(modifier = Modifier.width(8.dp))
 
                 OutlinedTextField(
                     value = operatorId,
@@ -112,10 +100,8 @@ fun ConnectionPanel(
                     enabled = !isConnectedOrConnecting,
                     keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
                     keyboardActions = KeyboardActions(onDone = { if (!isConnectedOrConnecting) onConnect() }),
-                    modifier = Modifier.weight(2f)
+                    modifier = Modifier.fillMaxWidth()
                 )
-
-                Spacer(modifier = Modifier.width(8.dp))
 
                 if (isConnectedOrConnecting) {
                     OutlinedButton(
@@ -125,7 +111,9 @@ fun ConnectionPanel(
                             contentColor = Color(0xFFD32F2F)
                         ),
                         contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 14.dp, vertical = 0.dp),
-                        modifier = Modifier.height(48.dp)
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(44.dp)
                     ) {
                         Text("연결 해제", fontWeight = FontWeight.Bold, fontSize = 12.sp)
                     }
@@ -135,7 +123,9 @@ fun ConnectionPanel(
                         shape = RoundedCornerShape(6.dp),
                         enabled = serverUrl.isNotBlank() && operatorId.isNotBlank(),
                         contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 14.dp, vertical = 0.dp),
-                        modifier = Modifier.height(48.dp)
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(44.dp)
                     ) {
                         Text(
                             text = if (connectionStatus == ConnectionStatus.CONNECTING) "연결 중..." else "서버 연결",
