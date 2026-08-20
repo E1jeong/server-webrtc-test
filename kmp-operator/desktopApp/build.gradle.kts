@@ -15,6 +15,8 @@ dependencies {
     implementation(libs.kotlinx.coroutinesSwing)
 
     implementation(libs.compose.uiToolingPreview)
+    implementation(libs.webrtc.java)
+    implementation(variantOf(libs.webrtc.java) { classifier("windows-x86_64") })
 
     testImplementation(libs.kotlin.test)
     testImplementation(libs.kotlinx.coroutines.test)
