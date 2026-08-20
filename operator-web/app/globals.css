@@ -88,6 +88,7 @@ h2 {
 .status {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 9px;
   min-width: 110px;
   padding: 9px 13px;
