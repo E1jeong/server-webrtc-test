@@ -59,13 +59,12 @@ flowchart LR
 
 ## Immutable Boundaries and Change Gates
 
-1. **Public Remote Push Prohibition**: The GitHub remote is confirmed PUBLIC. **NEVER run `git push` without explicit user publication authorization.**
-2. **Secret & Sensitive Data Boundary**: Never commit or log real internal IPs, URLs, TURN credentials, tokens, or device/customer identifiers.
-3. **Port 3019 on Windows Dev PC**: Default port 3000 conflicts on Windows development environments; `operator-web` MUST always run on `--port 3019 --hostname 127.0.0.1`.
-4. **Source Code Preservation (`operator-web/build/sites-vite-plugin.ts`)**: `build/sites-vite-plugin.ts` is required source code, NOT a disposable build artifact. Do not delete or clean it.
-5. **KMP Reference Baseline Preservation**: Do not refactor or break `operator-web` during KMP development; `operator-web` is the single source of truth for reference operator behavior.
-6. **Separate Android Repository Boundary**: Android client code lives in `android-anti-spoofing-lab`; do not assume Android source files exist in this monorepo.
-7. **No Arbitrary `npm audit fix`**: `operator-web` has 18 deferred dependency audit findings pending compatibility review; do not execute automatic audit fixes.
+1. **Secret & Sensitive Data Boundary**: Never commit or log real internal IPs, URLs, TURN credentials, tokens, or device/customer identifiers.
+2. **Port 3019 on Windows Dev PC**: Default port 3000 conflicts on Windows development environments; `operator-web` MUST always run on `--port 3019 --hostname 127.0.0.1`.
+3. **Source Code Preservation (`operator-web/build/sites-vite-plugin.ts`)**: `build/sites-vite-plugin.ts` is required source code, NOT a disposable build artifact. Do not delete or clean it.
+4. **KMP Reference Baseline Preservation**: Do not refactor or break `operator-web` during KMP development; `operator-web` is the single source of truth for reference operator behavior.
+5. **Separate Android Repository Boundary**: Android client code lives in `android-anti-spoofing-lab`; do not assume Android source files exist in this monorepo.
+6. **No Arbitrary `npm audit fix`**: `operator-web` has 18 deferred dependency audit findings pending compatibility review; do not execute automatic audit fixes.
 
 ---
 
