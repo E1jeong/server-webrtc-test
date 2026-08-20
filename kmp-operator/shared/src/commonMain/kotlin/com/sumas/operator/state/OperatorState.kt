@@ -12,6 +12,7 @@ data class OperatorState(
     val connectionStatus: ConnectionStatus = ConnectionStatus.DISCONNECTED,
     val peers: List<Peer> = emptyList(),
     val callState: CallState = CallState.Idle,
+    val callStatusMessage: String = "통화 대기",
     val logs: List<EventLog> = emptyList(),
     val callCounter: Int = 0,
     val logCounter: Long = 0L

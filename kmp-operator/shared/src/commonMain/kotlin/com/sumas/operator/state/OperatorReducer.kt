@@ -18,7 +18,8 @@ object OperatorReducer {
                 state.copy(
                     connectionStatus = action.status,
                     peers = if (isCleared) emptyList() else state.peers,
-                    callState = if (isCleared) CallState.Idle else state.callState
+                    callState = if (isCleared) CallState.Idle else state.callState,
+                    callStatusMessage = if (isCleared) "통화 대기" else state.callStatusMessage
                 )
             }
             is OperatorAction.ReceiveMessage -> handleMessage(state, action.message)
@@ -30,10 +31,14 @@ object OperatorReducer {
                     callState = CallState.Calling(
                         targetPeerId = action.targetDeviceId,
                         callId = callId
-                    )
+                    ),
+                    callStatusMessage = "${action.targetDeviceId} 응답 대기"
                 )
             }
-            is OperatorAction.Hangup -> state.copy(callState = CallState.Idle)
+            is OperatorAction.Hangup -> state.copy(
+                callState = CallState.Idle,
+                callStatusMessage = "통화 종료됨"
+            )
             is OperatorAction.ToggleMicrophoneMute -> {
                 when (val call = state.callState) {
                     is CallState.InCall -> state.copy(callState = call.copy(isMicrophoneMuted = action.isMuted))
@@ -41,10 +46,14 @@ object OperatorReducer {
                 }
             }
             is OperatorAction.UpdateCallStatusText -> {
-                when (val call = state.callState) {
-                    is CallState.InCall -> state.copy(callState = call.copy(statusText = action.statusText))
-                    else -> state
+                val nextCallState = when (val call = state.callState) {
+                    is CallState.InCall -> call.copy(statusText = action.statusText)
+                    else -> state.callState
                 }
+                state.copy(
+                    callState = nextCallState,
+                    callStatusMessage = action.statusText
+                )
             }
             is OperatorAction.AddLog -> {
                 val nextLogId = state.logCounter + 1
@@ -88,7 +97,8 @@ object OperatorReducer {
                 }
                 state.copy(
                     peers = updated,
-                    callState = if (targetOffline) CallState.Idle else state.callState
+                    callState = if (targetOffline) CallState.Idle else state.callState,
+                    callStatusMessage = if (targetOffline) "상대 단말과의 연결이 끊어졌습니다" else state.callStatusMessage
                 )
             }
             is SignalingMessage.CallAcceptMessage -> {
@@ -101,7 +111,8 @@ object OperatorReducer {
                                     peerId = peer,
                                     callId = message.callId,
                                     statusText = "통화 연결됨"
-                                )
+                                ),
+                                callStatusMessage = "통화 연결됨"
                             )
                         } else {
                             state
@@ -116,7 +127,12 @@ object OperatorReducer {
                     is CallState.InCall -> call.callId == message.callId
                     CallState.Idle -> false
                 }
-                if (isMyCall) state.copy(callState = CallState.Idle) else state
+                if (isMyCall) {
+                    state.copy(
+                        callState = CallState.Idle,
+                        callStatusMessage = "상대방이 통화를 거절했습니다"
+                    )
+                } else state
             }
             is SignalingMessage.CallHangupMessage -> {
                 val isMyCall = when (val call = state.callState) {
@@ -124,10 +140,21 @@ object OperatorReducer {
                     is CallState.InCall -> call.callId == message.callId
                     CallState.Idle -> false
                 }
-                if (isMyCall) state.copy(callState = CallState.Idle) else state
+                if (isMyCall) {
+                    state.copy(
+                        callState = CallState.Idle,
+                        callStatusMessage = "통화가 종료되었습니다"
+                    )
+                } else state
             }
             is SignalingMessage.ErrorMessage -> {
-                state.copy(connectionStatus = ConnectionStatus.ERROR)
+                val isCallError = state.callState !is CallState.Idle
+                val isPeerOffline = message.code == "peer_offline"
+                state.copy(
+                    connectionStatus = if (isPeerOffline) state.connectionStatus else ConnectionStatus.ERROR,
+                    callState = if (isCallError) CallState.Idle else state.callState,
+                    callStatusMessage = if (isPeerOffline) "단말이 연결되어 있지 않습니다" else "오류: ${message.message}"
+                )
             }
             else -> state
         }

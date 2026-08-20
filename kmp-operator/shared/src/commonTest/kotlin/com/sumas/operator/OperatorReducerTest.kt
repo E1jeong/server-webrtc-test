@@ -187,4 +187,41 @@ class OperatorReducerTest {
         state = OperatorReducer.reduce(state, OperatorAction.ClearLogs)
         assertTrue(state.logs.isEmpty())
     }
+
+    @Test
+    fun testPeerOfflineErrorDuringCallingResetsCallState() {
+        var state = OperatorState(
+            operatorId = "operator-01",
+            connectionStatus = ConnectionStatus.REGISTERED
+        )
+        state = OperatorReducer.reduce(state, OperatorAction.SendInvite("device-offline"))
+        assertIs<CallState.Calling>(state.callState)
+
+        val error = SignalingMessage.ErrorMessage(
+            code = "peer_offline",
+            message = "Target peer is not connected: device-offline"
+        )
+        state = OperatorReducer.reduce(state, OperatorAction.ReceiveMessage(error))
+        assertEquals(CallState.Idle, state.callState)
+        assertEquals(ConnectionStatus.REGISTERED, state.connectionStatus)
+        assertEquals("단말이 연결되어 있지 않습니다", state.callStatusMessage)
+    }
+
+    @Test
+    fun testGenericErrorResetsCallAndSetsErrorStatus() {
+        var state = OperatorState(
+            operatorId = "operator-01",
+            connectionStatus = ConnectionStatus.REGISTERED
+        )
+        state = OperatorReducer.reduce(state, OperatorAction.SendInvite("device-01"))
+
+        val error = SignalingMessage.ErrorMessage(
+            code = "internal_error",
+            message = "Server encountered internal error"
+        )
+        state = OperatorReducer.reduce(state, OperatorAction.ReceiveMessage(error))
+        assertEquals(CallState.Idle, state.callState)
+        assertEquals(ConnectionStatus.ERROR, state.connectionStatus)
+        assertEquals("오류: Server encountered internal error", state.callStatusMessage)
+    }
 }
