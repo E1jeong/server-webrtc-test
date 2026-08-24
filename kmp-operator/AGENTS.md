@@ -9,17 +9,17 @@
 ## Orient First
 
 - **Wiki SSOT**: `Dev/Project/Company/ubio-webrtc/technical/kmp-operator-migration-plan.md`
-- **Reference Implementation**: [operator-web/app/page.tsx](file:///C:/Users/Unionbiometrics/Desktop/company/11.server/ubio-webrtc/operator-web/app/page.tsx)
+- **Reference Implementation**: [`operator-web/app/page.tsx`](../operator-web/app/page.tsx)
 - **Core Sources**:
-  - Shared Signaling DTOs: [shared/.../SignalingMessage.kt](file:///C:/Users/Unionbiometrics/Desktop/company/11.server/ubio-webrtc/kmp-operator/shared/src/commonMain/kotlin/com/sumas/operator/signaling/SignalingMessage.kt)
-  - Call State & Reducer: [shared/.../OperatorReducer.kt](file:///C:/Users/Unionbiometrics/Desktop/company/11.server/ubio-webrtc/kmp-operator/shared/src/commonMain/kotlin/com/sumas/operator/state/OperatorReducer.kt)
-  - Desktop Operator Manager: [desktopApp/.../DesktopOperatorManager.kt](file:///C:/Users/Unionbiometrics/Desktop/company/11.server/ubio-webrtc/kmp-operator/desktopApp/src/main/kotlin/com/sumas/operator/state/DesktopOperatorManager.kt)
-  - Desktop Media Controller: [desktopApp/.../DesktopMediaController.kt](file:///C:/Users/Unionbiometrics/Desktop/company/11.server/ubio-webrtc/kmp-operator/desktopApp/src/main/kotlin/com/sumas/operator/media/DesktopMediaController.kt)
-  - WebRTC Desktop Media Controller: [desktopApp/.../WebrtcDesktopMediaController.kt](file:///C:/Users/Unionbiometrics/Desktop/company/11.server/ubio-webrtc/kmp-operator/desktopApp/src/main/kotlin/com/sumas/operator/media/webrtc/WebrtcDesktopMediaController.kt)
-  - WebRTC Video Renderer Sink: [desktopApp/.../WebrtcVideoRendererSink.kt](file:///C:/Users/Unionbiometrics/Desktop/company/11.server/ubio-webrtc/kmp-operator/desktopApp/src/main/kotlin/com/sumas/operator/media/webrtc/WebrtcVideoRendererSink.kt)
-  - Video Stage Panel UI: [desktopApp/.../VideoStagePanel.kt](file:///C:/Users/Unionbiometrics/Desktop/company/11.server/ubio-webrtc/kmp-operator/desktopApp/src/main/kotlin/com/sumas/operator/ui/components/VideoStagePanel.kt)
-  - Desktop Console UI: [desktopApp/.../OperatorConsoleScreen.kt](file:///C:/Users/Unionbiometrics/Desktop/company/11.server/ubio-webrtc/kmp-operator/desktopApp/src/main/kotlin/com/sumas/operator/ui/OperatorConsoleScreen.kt)
-  - Entrypoint: [desktopApp/.../main.kt](file:///C:/Users/Unionbiometrics/Desktop/company/11.server/ubio-webrtc/kmp-operator/desktopApp/src/main/kotlin/com/sumas/operator/main.kt)
+  - Shared Signaling DTOs: [`SignalingMessage.kt`](shared/src/commonMain/kotlin/com/sumas/operator/signaling/SignalingMessage.kt)
+  - Call State & Reducer: [`OperatorReducer.kt`](shared/src/commonMain/kotlin/com/sumas/operator/state/OperatorReducer.kt)
+  - Desktop Operator Manager: [`DesktopOperatorManager.kt`](desktopApp/src/main/kotlin/com/sumas/operator/state/DesktopOperatorManager.kt)
+  - Desktop Media Controller: [`DesktopMediaController.kt`](desktopApp/src/main/kotlin/com/sumas/operator/media/DesktopMediaController.kt)
+  - WebRTC Desktop Media Controller: [`WebrtcDesktopMediaController.kt`](desktopApp/src/main/kotlin/com/sumas/operator/media/webrtc/WebrtcDesktopMediaController.kt)
+  - WebRTC Video Renderer Sink: [`WebrtcVideoRendererSink.kt`](desktopApp/src/main/kotlin/com/sumas/operator/media/webrtc/WebrtcVideoRendererSink.kt)
+  - Video Stage Panel UI: [`VideoStagePanel.kt`](desktopApp/src/main/kotlin/com/sumas/operator/ui/components/VideoStagePanel.kt)
+  - Desktop Console UI: [`OperatorConsoleScreen.kt`](desktopApp/src/main/kotlin/com/sumas/operator/ui/OperatorConsoleScreen.kt)
+  - Entrypoint: [`main.kt`](desktopApp/src/main/kotlin/com/sumas/operator/main.kt)
 
 ## Boundary & Architecture Constraints
 

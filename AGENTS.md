@@ -39,9 +39,9 @@ flowchart LR
 
 | Module | Purpose / Technology | First Source Entrypoint | Submodule Guide | Related Wiki Topic |
 | --- | --- | --- | --- | --- |
-| `signaling-server/` | Central WebSocket signaling relay (Node.js 24, `ws`, Docker) | `signaling-server/src/server.js` | [signaling-server/AGENTS.md](file:///C:/Users/Unionbiometrics/Desktop/company/11.server/ubio-webrtc/signaling-server/AGENTS.md) | `components/signaling-server.md` |
-| `operator-web/` | Frozen browser reference client (React 19, Vinext/Vite, Tailwind); no active feature or UI development | `operator-web/app/page.tsx` | [operator-web/AGENTS.md](file:///C:/Users/Unionbiometrics/Desktop/company/11.server/ubio-webrtc/operator-web/AGENTS.md) | `components/operator-web.md` |
-| `kmp-operator/` | Active Kotlin Multiplatform Windows Desktop operator development | `kmp-operator/desktopApp/src/main/kotlin/com/sumas/operator/main.kt` | [kmp-operator/AGENTS.md](file:///C:/Users/Unionbiometrics/Desktop/company/11.server/ubio-webrtc/kmp-operator/AGENTS.md) | `technical/kmp-operator-migration-plan.md` |
+| `signaling-server/` | Central WebSocket signaling relay (Node.js 24, `ws`, Docker) | [`signaling-server/src/server.js`](signaling-server/src/server.js) | [`signaling-server/AGENTS.md`](signaling-server/AGENTS.md) | `components/signaling-server.md` |
+| `operator-web/` | Frozen browser reference client (React 19, Vinext/Vite, Tailwind); no active feature or UI development | [`operator-web/app/page.tsx`](operator-web/app/page.tsx) | [`operator-web/AGENTS.md`](operator-web/AGENTS.md) | `components/operator-web.md` |
+| `kmp-operator/` | Active Kotlin Multiplatform Windows Desktop operator development | [`kmp-operator/desktopApp/src/main/kotlin/com/sumas/operator/main.kt`](kmp-operator/desktopApp/src/main/kotlin/com/sumas/operator/main.kt) | [`kmp-operator/AGENTS.md`](kmp-operator/AGENTS.md) | `technical/kmp-operator-migration-plan.md` |
 
 ---
 
@@ -49,11 +49,12 @@ flowchart LR
 
 | Developer Intent | First Wiki Page | Primary Source Entrypoint | Downstream Trace Path |
 | --- | --- | --- | --- |
-| Update signaling protocol / event format | `technical/architecture.md` | `signaling-server/src/server.js` | `kmp-operator/shared/.../SignalingMessage.kt` |
-| Compare against the frozen browser reference | `components/operator-web.md` | `operator-web/app/page.tsx` | `operator-web/tests/rendered-html.test.mjs` |
-| Develop or verify the KMP Desktop operator | `technical/kmp-operator-migration-plan.md` | `kmp-operator/shared/.../OperatorReducer.kt` | `kmp-operator/desktopApp/.../DesktopOperatorManager.kt` |
-| Docker / Signaling deployment setup | `components/signaling-server.md` | `signaling-server/compose.yaml` | `signaling-server/Dockerfile` |
-| Investigate unverified audio/video/network issues | `issues/needs-verification.md` | `kmp-operator/desktopApp/.../DesktopOperatorManager.kt` | Physical device test log in wiki |
+| Update signaling protocol / event format | `technical/architecture.md` | [`signaling-server/src/server.js`](signaling-server/src/server.js) | [`kmp-operator/shared/.../SignalingMessage.kt`](kmp-operator/shared/src/commonMain/kotlin/com/sumas/operator/signaling/SignalingMessage.kt) |
+| Compare against the frozen browser reference | `components/operator-web.md` | [`operator-web/app/page.tsx`](operator-web/app/page.tsx) | [`operator-web/tests/rendered-html.test.mjs`](operator-web/tests/rendered-html.test.mjs) |
+| Develop or verify the KMP Desktop operator | `technical/kmp-operator-migration-plan.md` | [`kmp-operator/shared/.../OperatorReducer.kt`](kmp-operator/shared/src/commonMain/kotlin/com/sumas/operator/state/OperatorReducer.kt) | [`kmp-operator/desktopApp/.../DesktopOperatorManager.kt`](kmp-operator/desktopApp/src/main/kotlin/com/sumas/operator/state/DesktopOperatorManager.kt) |
+| Package standalone Windows distribution / MSI | `technical/kmp-operator-migration-plan.md` | [`kmp-operator/desktopApp/build.gradle.kts`](kmp-operator/desktopApp/build.gradle.kts) | [`kmp-operator/desktopApp/src/main/kotlin/com/sumas/operator/main.kt`](kmp-operator/desktopApp/src/main/kotlin/com/sumas/operator/main.kt) |
+| Docker / Signaling deployment setup | `components/signaling-server.md` | [`signaling-server/compose.yaml`](signaling-server/compose.yaml) | [`signaling-server/Dockerfile`](signaling-server/Dockerfile) |
+| Investigate unverified audio/video/network issues | `issues/needs-verification.md` | [`kmp-operator/desktopApp/.../DesktopOperatorManager.kt`](kmp-operator/desktopApp/src/main/kotlin/com/sumas/operator/state/DesktopOperatorManager.kt) | Physical device test log in wiki |
 
 ---
 

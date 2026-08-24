@@ -11,9 +11,9 @@
 - **Wiki SSOT**: `Dev/Project/Company/ubio-webrtc/components/signaling-server.md`
 - **Architecture & Protocol**: `Dev/Project/Company/ubio-webrtc/technical/architecture.md`
 - **Core Sources**:
-  - Main server logic: [src/server.js](file:///C:/Users/Unionbiometrics/Desktop/company/11.server/ubio-webrtc/signaling-server/src/server.js)
-  - Automated tests: [test/server.test.js](file:///C:/Users/Unionbiometrics/Desktop/company/11.server/ubio-webrtc/signaling-server/test/server.test.js)
-  - Container setup: [compose.yaml](file:///C:/Users/Unionbiometrics/Desktop/company/11.server/ubio-webrtc/signaling-server/compose.yaml), [Dockerfile](file:///C:/Users/Unionbiometrics/Desktop/company/11.server/ubio-webrtc/signaling-server/Dockerfile)
+  - Main server logic: [`src/server.js`](src/server.js)
+  - Automated tests: [`test/server.test.js`](test/server.test.js)
+  - Container setup: [`compose.yaml`](compose.yaml), [`Dockerfile`](Dockerfile)
 
 ## Boundary & Architecture Constraints
 

@@ -205,7 +205,8 @@ private fun DeviceItemCard(
             } else if (isCallingThis) {
                 Surface(
                     shape = RoundedCornerShape(4.dp),
-                    color = Color(0xFFFFA000).copy(alpha = 0.15f)
+                    color = Color.Transparent,
+                    border = BorderStroke(1.dp, Color(0xFFFFA000))
                 ) {
                     Text(
                         text = "연결 시도 중",

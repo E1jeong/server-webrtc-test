@@ -11,10 +11,10 @@
 - **Wiki SSOT**: `Dev/Project/Company/ubio-webrtc/components/operator-web.md`
 - **Architecture**: `Dev/Project/Company/ubio-webrtc/technical/architecture.md`
 - **Core Sources**:
-  - Main operator UI & WebRTC hook: [app/page.tsx](file:///C:/Users/Unionbiometrics/Desktop/company/11.server/ubio-webrtc/operator-web/app/page.tsx)
-  - Global styles: [app/globals.css](file:///C:/Users/Unionbiometrics/Desktop/company/11.server/ubio-webrtc/operator-web/app/globals.css)
-  - Rendered HTML test: [tests/rendered-html.test.mjs](file:///C:/Users/Unionbiometrics/Desktop/company/11.server/ubio-webrtc/operator-web/tests/rendered-html.test.mjs)
-  - Custom Vite plugin: [build/sites-vite-plugin.ts](file:///C:/Users/Unionbiometrics/Desktop/company/11.server/ubio-webrtc/operator-web/build/sites-vite-plugin.ts)
+  - Main operator UI & WebRTC hook: [`app/page.tsx`](app/page.tsx)
+  - Global styles: [`app/globals.css`](app/globals.css)
+  - Rendered HTML test: [`tests/rendered-html.test.mjs`](tests/rendered-html.test.mjs)
+  - Custom Vite plugin: [`build/sites-vite-plugin.ts`](build/sites-vite-plugin.ts)
 
 ## Boundary & Architecture Constraints
 
