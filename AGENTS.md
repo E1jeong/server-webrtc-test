@@ -7,17 +7,20 @@ This document is the repository-local AI navigation aid, task router, and execut
 ## Start Here
 
 - **Navigation Aid Only**: This guide owns routing, boundary constraints, and verification commands. It is not an archive of decisions, meeting notes, or theoretical explanations.
-- **Obsidian Wiki SSOT**: The authoritative project knowledge base is located at `Dev/Project/Company/ubio-webrtc/README.md`.
+- **Obsidian Wiki SSOT**: The authoritative project knowledge base starts at `Dev/Project/Company/ubio-webrtc/README.md`. Resolve the machine-specific vault through `_meta/routing-tables.md`; do not search arbitrary filesystem copies or use hardcoded `file:///` links.
 - **Mandatory Session Read Order**:
   1. `Dev/Project/Company/ubio-webrtc/README.md` (Project boundary & publication policy)
   2. `Dev/Project/Company/ubio-webrtc/handoff.md` (Current state, active starting point)
-  3. `Dev/Project/Company/ubio-webrtc/issues/needs-verification.md` (Unresolved risks & verification items)
+  3. Applicable schemas, from parent to nearest: `_meta/global-schema-rules.md` then `Dev/Project/Company/ubio-webrtc/schema.md`
+  4. `Dev/Project/Company/ubio-webrtc/index.md` (Task-area routing)
+  5. `Dev/Project/Company/ubio-webrtc/issues/needs-verification.md` only when the task touches uncertainty or an unresolved claim
+- **Before Editing**: For multi-step or resumed implementation, ground the wiki context against the live code, propose `step → verify` checkpoints, and confirm them before editing.
 - **Environment & Topology**: Windows development PC (`DESKTOP-PE3TPJN`). The monorepo contains the central signaling server, the validated KMP Desktop operator, and a frozen browser reference operator. Android terminal test client lives in a separate repository (`android-anti-spoofing-lab`).
-- **Language & Communication**: English for code comments, commit messages, and AI operating guides (`AGENTS.md`, `CLAUDE.md`).
+- **Language & Communication**: Use English for code comments, commit messages, maintained Project-wiki pages, and AI operating guides (`AGENTS.md`, `CLAUDE.md`). Report work in the user's language unless they request otherwise.
 
 ---
 
-## Product and Runtime Flow
+## Product and Runtime/Pipeline Map
 
 ```mermaid
 flowchart LR
@@ -35,7 +38,7 @@ flowchart LR
 
 ---
 
-## Module Map and First Reads
+## Module/Domain Map and First Reads
 
 | Module | Purpose / Technology | First Source Entrypoint | Submodule Guide | Related Wiki Topic |
 | --- | --- | --- | --- | --- |
