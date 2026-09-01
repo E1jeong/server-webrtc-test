@@ -13,7 +13,7 @@ This document is the repository-local AI navigation aid, task router, and execut
   2. `Dev/Project/Company/ubio-webrtc/handoff.md` (Current state, active starting point)
   3. Applicable schemas, from parent to nearest: `_meta/global-schema-rules.md` then `Dev/Project/Company/ubio-webrtc/schema.md`
   4. `Dev/Project/Company/ubio-webrtc/index.md` (Task-area routing)
-  5. `Dev/Project/Company/ubio-webrtc/issues/needs-verification.md` only when the task touches uncertainty or an unresolved claim
+  5. `Dev/Project/Company/ubio-webrtc/roadmap.md` only when the task touches backlog, open bugs, or verification history
 - **Before Editing**: For multi-step or resumed implementation, ground the wiki context against the live code, propose `step → verify` checkpoints, and confirm them before editing.
 - **Environment & Topology**: Windows development PC (`DESKTOP-PE3TPJN`). The monorepo contains the central signaling server, the validated KMP Desktop operator, and a frozen browser reference operator. Android terminal test client lives in a separate repository (`android-anti-spoofing-lab`).
 - **Language & Communication**: Use English for code comments, commit messages, maintained Project-wiki pages, and AI operating guides (`AGENTS.md`, `CLAUDE.md`). Report work in the user's language unless they request otherwise.
@@ -57,7 +57,7 @@ flowchart LR
 | Develop or verify the KMP Desktop operator | `technical/kmp-operator-migration-plan.md` | [`kmp-operator/shared/.../OperatorReducer.kt`](kmp-operator/shared/src/commonMain/kotlin/com/sumas/operator/state/OperatorReducer.kt) | [`kmp-operator/desktopApp/.../DesktopOperatorManager.kt`](kmp-operator/desktopApp/src/main/kotlin/com/sumas/operator/state/DesktopOperatorManager.kt) |
 | Package standalone Windows distribution / MSI | `technical/kmp-operator-migration-plan.md` | [`kmp-operator/desktopApp/build.gradle.kts`](kmp-operator/desktopApp/build.gradle.kts) | [`kmp-operator/desktopApp/src/main/kotlin/com/sumas/operator/main.kt`](kmp-operator/desktopApp/src/main/kotlin/com/sumas/operator/main.kt) |
 | Docker / Signaling deployment setup | `components/signaling-server.md` | [`signaling-server/compose.yaml`](signaling-server/compose.yaml) | [`signaling-server/Dockerfile`](signaling-server/Dockerfile) |
-| Investigate unverified audio/video/network issues | `issues/needs-verification.md` | [`kmp-operator/desktopApp/.../DesktopOperatorManager.kt`](kmp-operator/desktopApp/src/main/kotlin/com/sumas/operator/state/DesktopOperatorManager.kt) | Physical device test log in wiki |
+| Investigate unverified audio/video/network issues | `roadmap.md` | [`kmp-operator/desktopApp/.../DesktopOperatorManager.kt`](kmp-operator/desktopApp/src/main/kotlin/com/sumas/operator/state/DesktopOperatorManager.kt) | Physical device test log in wiki |
 
 ---
 
