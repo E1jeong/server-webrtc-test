@@ -13,10 +13,12 @@
 - **Core Sources**:
   - Shared Signaling DTOs: [`SignalingMessage.kt`](shared/src/commonMain/kotlin/com/sumas/operator/signaling/SignalingMessage.kt)
   - Call State & Reducer: [`OperatorReducer.kt`](shared/src/commonMain/kotlin/com/sumas/operator/state/OperatorReducer.kt)
+  - Desktop WebSocket Client: [`DesktopWebSocketClient.kt`](desktopApp/src/main/kotlin/com/sumas/operator/signaling/DesktopWebSocketClient.kt)
   - Desktop Operator Manager: [`DesktopOperatorManager.kt`](desktopApp/src/main/kotlin/com/sumas/operator/state/DesktopOperatorManager.kt)
   - Desktop Media Controller: [`DesktopMediaController.kt`](desktopApp/src/main/kotlin/com/sumas/operator/media/DesktopMediaController.kt)
   - WebRTC Desktop Media Controller: [`WebrtcDesktopMediaController.kt`](desktopApp/src/main/kotlin/com/sumas/operator/media/webrtc/WebrtcDesktopMediaController.kt)
   - WebRTC Video Renderer Sink: [`WebrtcVideoRendererSink.kt`](desktopApp/src/main/kotlin/com/sumas/operator/media/webrtc/WebrtcVideoRendererSink.kt)
+  - Video Frame & Rotation Converter: [`I420ToImageBitmapConverter.kt`](desktopApp/src/main/kotlin/com/sumas/operator/media/webrtc/I420ToImageBitmapConverter.kt)
   - Video Stage Panel UI: [`VideoStagePanel.kt`](desktopApp/src/main/kotlin/com/sumas/operator/ui/components/VideoStagePanel.kt)
   - Desktop Console UI: [`OperatorConsoleScreen.kt`](desktopApp/src/main/kotlin/com/sumas/operator/ui/OperatorConsoleScreen.kt)
   - Entrypoint: [`main.kt`](desktopApp/src/main/kotlin/com/sumas/operator/main.kt)
