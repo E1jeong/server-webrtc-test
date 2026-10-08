@@ -1,18 +1,6 @@
 # UBio WebRTC Signaling Server
 
-Face Pro와 관리자 웹 사이에서 WebRTC 연결 정보만 전달하는 회사 LAN 내부 PoC 서버입니다. 영상과 음성은 이 서버를 통과하지 않습니다.
-
-## 제공 기능
-
-- `GET /health`: 서버 상태와 접속 Peer 수
-- `WS /ws`: JSON WebSocket
-- `device` 및 `operator` Peer 등록
-- 온라인 Peer 목록과 접속·종료 알림
-- 통화 요청·수락·거절·종료 메시지 중계
-- WebRTC SDP Offer/Answer와 ICE Candidate 중계
-- 끊긴 WebSocket 정리를 위한 heartbeat
-
-인증, TLS, 영속 저장소, 통화 상태 복구, TURN은 포함하지 않습니다. 현재 구성은 신뢰할 수 있는 회사 LAN의 기능 검증 전용입니다.
+Android 테스트 단말과 운영자 클라이언트 사이에서 WebRTC 연결 정보만 전달하는 회사 LAN 내부 PoC 서버입니다. 영상과 음성은 이 서버를 통과하지 않습니다. 활성 운영자 클라이언트는 KMP Desktop이고, 브라우저 운영자는 회귀 비교용으로만 남아 있습니다.
 
 ## 실행
 
@@ -36,19 +24,19 @@ docker compose down
 
 ## WebSocket 접속
 
-관리자 웹이 같은 PC에서 실행될 때:
+같은 PC의 운영자 클라이언트:
 
 ```text
 ws://localhost:8080/ws
 ```
 
-Face Pro에서 접속할 때:
+Android 테스트 단말:
 
 ```text
 ws://<회사-PC-LAN-IP>:8080/ws
 ```
 
-Windows 방화벽에서는 TCP 8080 인바운드를 Face Pro가 속한 네트워크 범위에만 허용합니다.
+단말에서 접속하려면 호스트의 TCP 8080이 그 LAN에서 도달할 수 있어야 합니다.
 
 ## 메시지 흐름
 
@@ -68,7 +56,9 @@ Windows 방화벽에서는 TCP 8080 인바운드를 Face Pro가 속한 네트워
 {
   "type": "registered",
   "peerId": "device-1",
-  "peers": []
+  "peers": [
+    { "peerId": "device-1", "peerType": "device" }
+  ]
 }
 ```
 
@@ -109,4 +99,5 @@ Node.js를 로컬에 설치한 경우에는 직접 실행할 수도 있습니다
 ```powershell
 npm install
 npm test
+npm start
 ```

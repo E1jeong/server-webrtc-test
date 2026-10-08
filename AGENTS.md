@@ -41,4 +41,4 @@
   ```powershell
   cd kmp-operator; .\gradlew.bat test; .\gradlew.bat desktopApp:test
   ```
-- Report exact commands and results. Never commit or push: the user manages all git commits and pushes manually.
+- Report exact commands and results.

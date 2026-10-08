@@ -2,26 +2,15 @@
 
 This monorepo provides a LAN-only proof of concept for one-to-one WebRTC audio and video calls between the UBio Android test device and the Windows Desktop operator console.
 
-The KMP Desktop operator is the active development client. Its end-to-end LAN call path, including bidirectional audio and video, has been verified with the Android test device. The browser operator remains in this repository only as a frozen reference implementation and must not receive feature or UI development unless explicitly requested.
+The KMP Desktop operator is the active development client. The browser operator remains in this repository only as a frozen reference implementation and must not receive feature or UI development unless explicitly requested.
 
 ## Components
 
 - `signaling-server/` — Node.js WebSocket relay for peer registration, call control, SDP, and ICE messages.
 - `kmp-operator/` — Kotlin Multiplatform Windows Desktop operator console, including the WebRTC media path and Windows packaging configuration.
-- `operator-web/` — Frozen React browser reference client for regression comparison only; it is not under active development.
+- `operator-web/` — Frozen React browser reference client for regression comparison only.
 
-The Android test-device implementation is maintained separately in the `android-anti-spoofing-lab` repository.
-
-## Current Scope
-
-- Trusted-LAN, fixed test peers
-- Operator-initiated calls with Android auto-accept
-- SDP Offer/Answer and trickle ICE signaling
-- Bidirectional video and audio
-- Microphone mute and media-track cleanup
-- KMP Desktop operator packaging for Windows
-
-STUN/TURN, authentication, HTTPS/WSS, and production deployment policy are outside the current proof-of-concept scope. Long-running call stability, reconnection, audio-device selection, and remaining hardware edge cases still require verification.
+The Android test-device implementation is maintained separately in the `android-anti-spoofing-lab` repository. Call behavior, verification status, and deployment limits are maintained in the project wiki.
 
 ## Run the Signaling Server
 
