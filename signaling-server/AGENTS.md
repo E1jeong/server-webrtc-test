@@ -3,13 +3,10 @@
 ## Scope
 
 - Central WebSocket signaling relay server for UBio WebRTC communication between `operator` and `device` peers.
-- Relays registration, presence (`peer.list`, `peer.online`, `peer.offline`), call negotiation (`call.invite`, `call.accept`, `call.reject`, `call.hangup`), and WebRTC signaling (`webrtc.offer`, `webrtc.answer`, `webrtc.ice`).
 - Owns HTTP health endpoint (`GET /health`), Docker Compose runtime, and stale connection heartbeat management.
 
 ## Orient First
 
-- **Wiki SSOT**: `Dev/Project/Company/ubio-webrtc/components/signaling-server.md`
-- **Architecture & Protocol**: `Dev/Project/Company/ubio-webrtc/technical/architecture.md`
 - **Core Sources**:
   - Main server logic: [`src/server.js`](src/server.js)
   - Automated tests: [`test/server.test.js`](test/server.test.js)
@@ -36,9 +33,6 @@ cd signaling-server
 # Run unit tests
 npm test
 
-# Docker container build & health check
-docker compose up -d --build
-docker compose ps
-docker compose logs -f signaling
-docker compose down
 ```
+
+- For requested container/runtime verification, use the `components/signaling-server` wiki runbook; unit tests do not establish deployed health.

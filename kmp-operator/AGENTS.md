@@ -2,13 +2,12 @@
 
 ## Scope
 
-- Kotlin Multiplatform study PoC implementing a Desktop (Windows) operator peer and shared signaling logic.
+- Own the active Kotlin Multiplatform Desktop (Windows) operator and shared signaling logic.
 - Implements `shared/commonMain` pure signaling DTOs, connection/call state, and `OperatorReducer`.
 - Implements Compose Desktop console UI (`desktopApp/`) and chunk-safe `DesktopWebSocketClient` (JDK 11+ HttpClient WebSocket).
 
 ## Orient First
 
-- **Wiki SSOT**: `Dev/Project/Company/ubio-webrtc/technical/kmp-operator-migration-plan.md`
 - **Reference Implementation**: [`operator-web/app/page.tsx`](../operator-web/app/page.tsx)
 - **Core Sources**:
   - Shared Signaling DTOs: [`SignalingMessage.kt`](shared/src/commonMain/kotlin/com/sumas/operator/signaling/SignalingMessage.kt)
