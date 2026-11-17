@@ -4,8 +4,8 @@
 
 - Governs code navigation, component boundaries, and execution safety for the `ubio-webrtc` monorepo.
 - The Obsidian wiki at vault-relative `Dev/Project/Company/ubio-webrtc` is the single source of truth for architecture, message protocols, deployment topology, and component verification. Resolve the vault through `_meta/routing-tables.md` or `obsidian-wiki-sync`, never a hardcoded file URL.
-- **External Boundaries**: Android test client lives in a separate repository (`android-anti-spoofing-lab`); UBio-N Face Pro production integration remains deferred.
-- **Environment**: Windows development PC (`DESKTOP-PE3TPJN`). The monorepo houses the central signaling server, active KMP Desktop operator, and frozen browser reference operator.
+- **External Boundaries**: UBio-N Face Pro production integration remains deferred.
+- **Environment**: Windows development PC (`DESKTOP-PE3TPJN`).
 - Read the nearest component `AGENTS.md` before modifying a submodule; this root guide remains in force everywhere.
 
 ## Code Map
